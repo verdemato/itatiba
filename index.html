@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 - Calednário da coleta de lixo — Itatiba</title>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗑️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<meta property="og:title" content="Coleta de lixo em Itatiba">
+<meta property="og:description" content="Consulte os dias e horários da coleta na sua região. Não precisa instalar app e não precisa se cadastrar.">
+<meta property="og:image" content="sc.png">
+<meta property="og:url" content="https://seu-dominio.com">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Coleta de lixo em Itatiba">
+<meta name="twitter:description" content="Consulte os dias e horários da coleta na sua região. Sem instalar app e sem cadastro.">
+<meta name="twitter:image" content="sc.png">
+
+</head>
+<body>
+
+<!-- HOME -->
+<main class="screen active" id="screen-home">
+  <header class="app-header">
+    <p class="header-eyebrow">Cidade de Itatiba</p>
+    <h1 class="header-title">Calendário da<br>coleta de lixo</h1>
+    <p class="header-sub">Encontre seu bairro para saber os dias<br>de cada tipo de coleta</p>
+  </header>
+
+
+
+  <div class="home-panels">
+  <div class="home-left">
+  <div class="search-wrap">
+    <div class="search-inner">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="search" placeholder="Pesquise aqui um bairro, avenida…" oninput="filterList(this.value)" autocomplete="off"/>
+    </div>
+  <div class="dropdown" id="dropdown"></div>
+  </div>
+
+  <div class="result-panel" id="panel">
+    <div class="result-top">
+      <div><h2 class="r-name" id="r-name"></h2></div>
+      <div class="close-btn" onclick="closePanel()">✕</div>
+    </div>
+    <div class="cards" id="cards"></div>
+  </div>
+
+  <div class="section">
+    <h2 class="sec-lbl">Bairros e loteamentos</h2>
+    <div class="list" id="list"></div>
+    <div class="empty" id="empty">Nenhum local foi encontrado</div>
+  </div>
+  </div><!-- /home-left -->
+
+  <div class="home-right" id="home-right">
+    <div class="home-right-inner" id="home-right-inner">
+      <div id="desktop-info-panel" style="display:none">
+        <div id="desktop-info-content"></div>
+      </div>
+
+
+    </div>
+  </div><!-- /home-right -->
+  </div><!-- /home-panels -->
+
+  <div class="nav-info"><h3>Mais info:</h3></div>
+  <nav class="shortcuts-wrap" aria-label="Atalhos">
+
+    <div class="sc-track" id="sc-track">
+
+  <div class="sc-card" onclick="showScreen('screen-outros-descartes')">
+    <div class="sc-icon">📦</div>
+    <div class="sc-body">
+
+      <p class="sc-title">Onde descarto isso?</p>
+      <div class="sc-desc">Óleo, eletrônicos, lâmpadas e outros</div>
+    </div>
+  </div>
+
+  <div class="sc-card" onclick="showScreen('screen-oleo-do-bem')">
+    <div class="sc-icon">🤗</div>
+    <div class="sc-body">
+      <p class="sc-title">Óleo do Bem</p>
+      <div class="sc-desc">Traga 1 litro e ganhe 1 barra de sabão!</div>
+    </div>
+  </div>
+
+  <div class="sc-card" onclick="showScreen('screen-ecopontos')">
+    <div class="sc-icon">🛢️</div>
+    <div class="sc-body">
+      <p class="sc-title">Ecopontos</p>
+      <div class="sc-desc">Recicláveis, construção, eletrônicos</div>
+    </div>
+  </div>
+
+    <div class="sc-card" onclick="showScreen('screen-domiciliar')">
+    <div class="sc-icon">🗑️</div>
+    <div class="sc-body">
+      <p class="sc-title">Coleta domiciliar</p>
+      <div class="sc-desc">A coleta diária dos resíduos nos bairros</div>
+    </div>
+  </div>
+
+    <div class="sc-card" onclick="showScreen('screen-seletiva')">
+    <div class="sc-icon">♻️</div>
+    <div class="sc-body">
+      <p class="sc-title">Coleta seletiva</p>
+      <div class="sc-desc">É a coleta do resíduo reciclável</div>
+    </div>
+  </div>
+
+
+    <div class="sc-card" onclick="showScreen('screen-cata')">
+    <div class="sc-icon">🪑</div>
+    <div class="sc-body">
+      <p class="sc-title">Catabugiganga</p>
+      <div class="sc-desc">A coleta de moveis e outros volumosos</div>
+    </div>
+  </div>
+
+  <div class="sc-card" onclick="showScreen('screen-denuncia')">
+    <div class="sc-icon">🚨</div>
+    <div class="sc-body">
+      <p class="sc-title">Denunciar descarte</p>
+      <div class="sc-desc">Viu alguém jogar lixo errado? Denuncie aqui.</div>
+    </div>
+  </div>
+
+  <div class="sc-card" onclick="window.open('https://pmitatiba.smarapd.com.br/portalcidadao/#!/inicio','_blank')">
+    <div class="sc-icon">🗣️</div>
+    <div class="sc-body">
+      <p class="sc-title">Fala cidadão!</p>
+      <div class="sc-desc">Reclamações e sugestões à Prefeitura de Itatiba</div>
+    </div>
+  </div>
+</div>
+    <!-- /sc-track-outer -->
+
+  </nav>
+
+  <footer class="footer">
+    2026 · Calendário da coleta de lixo<br>
+    Dados públicos obtidos da <a href="https://www.itatiba.sp.gov.br" target="_blank">Prefeitura de Itatiba</a><br><br>
+    <a onclick="showScreen('screen-sobre')">Sobre esse app</a> · <a onclick="showScreen('screen-termos')">Termos de uso</a> · <a onclick="showScreen('screen-sobre')">Avisar sobre erros</a>
+  </footer>
+</main>
+
+<!-- SOBRE -->
+<article class="screen" id="screen-sobre">
+  <header class="info-header info-header--green">
+    <button class="info-back" onclick="goHome()">Voltar</button>
+    <div class="info-hdr-row">
+      <div class="screen-icon screen-icon-green">ℹ️</div>
+      <h2 class="info-title">Sobre esse app</h2>
+    </div>
+  </header>
+  <div class="info-body">
+
+
+<p>Este aplicativo foi criado para facilitar o acesso às informações sobre descarte correto de resíduos na cidade de Itatiba, São Paulo.</p>
+
+<p>Aqui você encontra orientações sobre os tipos e dias de coleta, locais de descarte, ecopontos e iniciativas como o programa Óleo do Bem. A proposta é ajudar moradores a entenderem de forma simples onde e como descartar cada tipo de material, contribuindo para uma cidade mais limpa e sustentável.</p>
+
+
+<p>Além disso, o app reúne canais úteis para contato com a prefeitura, denúncias de descarte irregular e informações atualizadas sobre serviços ambientais.</p>
+
+
+<p>Nosso objetivo é tornar o cuidado com o meio ambiente mais acessível no dia a dia, incentivando práticas conscientes e responsáveis.</p>
+
+<h2>Reportar erros</h2>
+<p>Envie um e-mail para <a href="mailto:verdemato@proton.me">verdemato@proton.me</a></p>
+
+
+<h2>Gostou do app? Apoie este projeto 💚</h2>
+  <p>Sua doação ajuda a manter o app atualizado.</p>
+
+  <div class="pix-chave">
+    <span id="pixKey">verdemato@proton.me</span>
+    <button onclick="copiarPix()">Copiar chave Pix</button>
+  </div>
+
+  <p id="mensagem" style="display:none; margin-top:10px;">
+    Chave Pix copiada!
+  </p>
+
+
+
+    <footer class="footer">2026 · Calendário da coleta de lixo<br>Dados públicos obtidos da <a href="https://www.itatiba.sp.gov.br" target="_blank">Prefeitura de Itatiba</a><br><br><a onclick="showScreen('screen-sobre')">Sobre esse app</a> · <a onclick="showScreen('screen-termos')">Termos de uso</a> · <a onclick="showScreen('screen-sobre')">Avisar sobre erros</a></footer>
+  </div>
+</article>
+
+<!-- TERMOS -->
+<article class="screen" id="screen-termos">
+  <header class="info-header" style="background:var(--g-dark)">
+    <button class="info-back" onclick="goHome()">Voltar</button>
+    <div class="info-hdr-row">
+      <div class="screen-icon screen-icon-green">📄</div>
+      <h2 class="info-title">Termos de uso</h2>
+    </div>
+  </header>
+  <div class="info-body">
+      <h2>1. Aceitação dos termos</h2>
+  <p>
+    Ao acessar e utilizar este aplicativo, você concorda com os presentes Termos de Uso.
+    Caso não concorde com qualquer condição, recomendamos que não utilize o serviço.
+  </p>
+
+  <h2>2. Sobre o serviço</h2>
+  <p>
+    Este aplicativo tem como objetivo disponibilizar informações sobre coleta de resíduos,
+    ecopontos, descarte adequado de materiais e canais de contato com serviços públicos.
+  </p>
+  <p>
+    As informações apresentadas são de caráter informativo e podem ser atualizadas periodicamente.
+  </p>
+
+  <h2>3. Uso adequado</h2>
+  <ul>
+    <li>Utilizar o aplicativo de forma responsável e em conformidade com a legislação vigente</li>
+    <li>Não utilizar o app para fins ilegais ou prejudiciais</li>
+    <li>Não inserir informações falsas em canais de denúncia</li>
+    <li>Não tentar comprometer a segurança ou funcionamento do aplicativo</li>
+  </ul>
+
+  <h2>4. Informações e responsabilidade</h2>
+  <p>
+    Embora sejam feitos esforços para manter as informações corretas e atualizadas,
+    não garantimos a total precisão ou atualidade dos dados apresentados.
+  </p>
+  <p>
+    O usuário é responsável por verificar informações importantes diretamente com os órgãos competentes quando necessário.
+  </p>
+
+  <h2>5. Links externos</h2>
+  <p>
+    O aplicativo pode conter links para sites externos. Não nos responsabilizamos pelo conteúdo,
+    políticas ou práticas desses sites.
+  </p>
+
+  <h2>6. Disponibilidade do serviço</h2>
+  <p>
+    O funcionamento do aplicativo pode ser interrompido, suspenso ou alterado a qualquer momento,
+    sem aviso prévio, para manutenção, atualização ou por outros motivos.
+  </p>
+
+  <h2>7. Privacidade</h2>
+  <p>
+    Este aplicativo pode coletar dados básicos de uso para melhorar a experiência do usuário.
+    Para mais informações, consulte a Política de Privacidade (se aplicável).
+  </p>
+
+  <h2>8. Alterações nos termos</h2>
+  <p>
+    Estes Termos de Uso podem ser atualizados a qualquer momento.
+    Recomendamos a revisão periódica desta página.
+  </p>
+
+  <h2>9. Contato</h2>
+  <p>
+    Em caso de dúvidas ou sugestões, entre em contato pelo e-mail:
+    <a href="mailto:verdemato@proton.me" class="link-plain">verdemato@proton.me</a>
+  </p>
+
+  <h2>10. Legislação aplicável</h2>
+  <p>
+    Estes termos são regidos pelas leis vigentes no Brasil.
+  </p>
+    <footer class="footer">2026 · Calendário da coleta de lixo<br>Dados públicos obtidos da <a href="https://www.itatiba.sp.gov.br" target="_blank">Prefeitura de Itatiba</a><br><br><a onclick="showScreen('screen-sobre')">Sobre esse app</a> · <a onclick="showScreen('screen-termos')">Termos de uso</a> · <a onclick="showScreen('screen-sobre')">Avisar sobre erros</a></footer>
+  </div>
+</article>
+
+<!-- COLETA DOMICILIAR -->
+<article class="screen info-domiciliar" id="screen-domiciliar">
+  <header class="info-header">
+    <button class="info-back" onclick="goHome()">Voltar</button>
+    <div class="info-hdr-row">
+      <div class="screen-icon screen-icon-amber">🗑️</div>
+      <h2 class="info-title">Coleta Domiciliar</h2>
+    </div>
+  </header>
+  <div class="info-body">
+    <p>A Coleta Domiciliar é a coleta do lixo gerado pelas casas, condomínios, lojas e empresas. Em Itatiba, a coleta domiciliar é feita porta-a-porta, isto é, basta colocar na frente de casa, nos dias e horários certos.</p>
+    <h3 class="section-label">Dúvidas comuns</h3>
+    <div class="accordion">
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">O que posso descartar na Coleta domiciliar? <div class="acc-chevron">▼</div></button>
+        <div class="acc-body">
+
+<ul>
+  <li><strong>Restos de alimentos</strong> como carne, cascas de frutas, ovos etc</li>
+
+  <li>
+    <strong>Papeis sujos:</strong>
+    lenços, guardanapos, papel higiênico, papelão, caixa de pizza suja de óleo, jornais sujos etc.
+  </li>
+  <li><strong>Fraldas e absorventes descartáveis</strong></li>
+  <li><strong>Hastes flexíveis</strong></li>
+  <li><strong>Esponjas e lã de aço</strong></li>
+  <li><strong>Fezes de animais domésticos</strong></li>
+</ul>
+
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">O que NÃO posso descartar na Coleta domiciliar? <div class="acc-chevron">▼</div></button>
+        <div class="acc-body">
+
+     <ul>
+  <li>
+    <strong>Resíduos recicláveis:</strong>
+    papéis, plásticos, vidros, metais e embalagens em geral, recicle! Descarte na <a onclick="showScreen('screen-seletiva')" class="link-green">Coleta seletiva</a>  do seu bairro ou leve até um <a onclick="showScreen('screen-ecopontos')" class="link-green">Ecoponto</a>
+  </li>
+  <li><strong>Resíduos eletrônicos</strong>. Leve até um Ecoponto.</li>
+  <li><strong>Pilhas e baterias</strong>.</li>
+  <li><strong>Lâmpadas</strong>. O Atacarejo Assaí recebe lâmpadas em geral.</li>
+  <li>
+    <strong>Resíduos automotivos:</strong>
+    qualquer tipo, tais como peças, filtros, estopas sujas de óleo etc.
+  </li>
+  <li>
+    <strong>Resíduo hospitalar:</strong>
+    seringas, agulhas, pontas para medição de diabetes etc.Leve até uma unidade de saúde.
+  </li>
+    <li>
+    <strong>Medicamentos vencidos ou não</strong>. Leve até um farmácia no seu bairro.
+  </li>
+  <li>
+    <strong>Resíduos verdes:</strong>
+    podas de árvores, folhas, gramas, restos de jardinagem podem ser levados ao Ecoponto.
+  </li>
+  <li><strong>Óleo de cozinha</strong>, deve ser levado aos pontos do <a onclick="showScreen('screen-oleo-do-bem')" class="link-green">Óleo do bem</a> ou até o Atacarejo Assai ou Tenda.</li>
+</ul>
+
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">Como descartar o lixo da Coleta domiciliar? <div class="acc-chevron">▼</div></button>
+        <div class="acc-body">
+          <ul>
+            <li>Separe os resíduos de cada coleta de forma adequada ao longo do dia</li>
+            <li><strong>Acondicione os materiais de maneira adequada:</strong> devem ser utilizados embalagens plásticas resistentes que não se rompam durante a coleta</li>
+            <li>Colocar o resíduo acondicionado de forma adequada no dia e horário de coleta do seu bairro (<strong>coleta diurna se inicia às 07:00 e a noturna às 19:00</strong>)</li>
+            <li>Espetos de churrasco podem ser colocados em garrafas PET <strong>para evitar acidentes com os coletores</strong></li>
+            <li>O resíduo deve ser colocado <strong>em frente a sua própria residência ou comércio na calçada ou lixeira</strong></li>
+          </ul>
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">🚫​ Não faça isso! <div class="acc-chevron">▼</div></button>
+        <div class="acc-body">
+          <ul>
+            <li><strong>NÃO</strong> colocar diversos sacos pequenos (sacolas de mercado), devem ser acondicionados em sacos maiores.</li>
+            <li><strong>NÃO</strong> devem ser colocados em frente a outras residências, comércios, praças, terrenos não edificados, muros, etc. <strong>(ato considerado descarte irregular e está sujeito a multa)</strong>.</li>
+            <li><strong>NÃO</strong> colocar materiais pontudos que podem causar o rompimento das embalagens e acidentes.</li>
+            <li><strong>NÃO</strong> colocar em dia e horário diferente do correto para o bairro.</li>
+            <li>A coleta domiciliar <strong>NÃO</strong> recolhe resíduos verdes (podas de árvores, folhas, gramas, restos de jardinagem).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div style="padding:16px 0 0;font-size:12px;color:var(--text-3)">🔗 Fonte: <a href="https://itatiba.sp.gov.br/coletadomiciliar" target="_blank" class="link-plain">Site da Prefeitura de Itatiba</a></div>
+    <footer class="footer">2026 · Calendário da coleta de lixo<br>Dados públicos obtidos da <a href="https://www.itatiba.sp.gov.br" target="_blank">Prefeitura de Itatiba</a><br><br><a onclick="showScreen('screen-sobre')">Sobre esse app</a> · <a onclick="showScreen('screen-termos')">Termos de uso</a> · <a onclick="showScreen('screen-sobre')">Avisar sobre erros</a></footer>
+  </div>
+</article>
+
+<!-- COLETA SELETIVA -->
+<article class="screen info-seletiva" id="screen-seletiva">
+  <header class="info-header">
+    <button class="info-back" onclick="goHome()">Voltar</button>
+    <div class="info-hdr-row">
+      <div class="screen-icon screen-icon-green">♻️</div>
+      <h2 class="info-title">Coleta Seletiva</h2>
+    </div>
+  </header>
+  <div class="info-body">
+    <p>A Coleta Seletiva é a coleta de recicláveis, os resíduos que podem ser reutilizados na fabricação de novos objetos e produtos. Essa coleta é feita porta-a-porta, isto é, basta colocar na frente de casa, nos dias e horários certos.</p>
+    <h3 class="section-label">Dúvidas comuns</h3>
+    <div class="accordion">
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">O que posso descartar na Coleta seletiva? <div class="acc-chevron">▼</div></button>
+        <div class="acc-body">
+          <ul>
+            <li>Metais como latas, fios elétricos, panelas etc</li>
+            <li>Papeis e papelão limpos, como revistas e jornais, caixas de papelão etc</li>
+            <li>Plásticos como embalagens de alimentos, PET, copos, baldes, tubos etc</li>
+            <li>Vidros, garrafas quebradas ou não, potes, jarras etc. <strong>EXCETO</strong> janelas e vitrais</li>
+            <li>EPS (isopor) limpo</li>
+          </ul>
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">O que NÃO posso descartar na Coleta seletiva? <div class="acc-chevron">▼</div></button>
+        <div class="acc-body">
+          <ul>
+            <li>Hastes flexíveis, papeis sujos: lenços, guardanapos, papel higiênico, etc.</li>
+            <li>Fezes de animais domésticos</li>
+            <li>Esponjas e lã de aço</li>
+            <li>Fraldas e absorventes descartáveis</li>
+            <li>Lâmpadas, pilhas, baterias e resíduos eletrônicos</li>
+            <li>Resíduos automotivos: peças, filtros, estopas sujas de óleo, etc.</li>
+            <li>Resíduo hospitalar: seringas, agulhas, pontas para medição de diabetes, etc. (levar até uma unidade de saúde)</li>
+            <li>Resíduos orgânicos: restos de alimentos, carnes, cascas de frutas, legumes, ovos</li>
+            <li>Resíduos verdes: podas de árvores, folhas, gramas, restos de jardinagem</li>
+            <li>Óleo de cozinha — veja sobre o <a onclick="showScreen('screen-oleo-do-bem')" class="link-green">Óleo do Bem</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">Como descartar o lixo da Coleta seletiva? <div class="acc-chevron">▼</div></button>
+        <div class="acc-body">
+          <ul>
+            <li>Higienize o lixo reciclável</li>
+            <li>Coloque cacos de vidro dentro de um pote de vidro ou enrolados em jornal</li>
+            <li>Separe o lixo de cada coleta ao longo do dia</li>
+            <li>Embale vidros quebrados em embalagem selada e identificada para evitar acidentes</li>
+            <li>Acondicione os materiais em embalagens plásticas resistentes ou caixas fechadas</li>
+            <li>Coloque o resíduo no dia e horário de coleta do seu bairro</li>
+            <li>O resíduo deve ser colocado em frente à sua própria residência ou comércio</li>
+          </ul>
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">🚫​ Não faça isso! <div class="acc-chevron">▼</div></button>
+        <div class="acc-body">
+          <ul>
+            <li><strong>NÃO</strong> distribuir em embalagens pequenas. Use menos embalagens para ajudar a coleta ser mais rápida.</li>
+            <li><strong>NÃO</strong> coloque em frente à residências de outras pessoas, comércios, praças, terrenos vazios, muros etc. <strong>(ato considerado descarte irregular e está sujeito a multa)</strong>.</li>
+            <li><strong>EVITAR</strong> materiais pontudos que podem causar o rompimento das embalagens e acidentes.</li>
+            <li><strong>NÃO</strong> colocar em dia e horário diferente do previsto no cronograma do bairro.</li>
+            <li><strong>NÃO</strong> confundir <strong>materiais recicláveis</strong> com os <strong>resíduos volumosos</strong> (<a onclick="showScreen('screen-cata')" class="link-green">Catabugiganga</a>).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <footer class="footer">2026 · Calendário da coleta de lixo<br>Dados públicos obtidos da <a href="https://www.itatiba.sp.gov.br" target="_blank">Prefeitura de Itatiba</a><br><br><a onclick="showScreen('screen-sobre')">Sobre esse app</a> · <a onclick="showScreen('screen-termos')">Termos de uso</a> · <a onclick="showScreen('screen-sobre')">Avisar sobre erros</a></footer>
+  </div>
+</article>
+
+<!-- CATABUGIGANGA -->
+<article class="screen info-cata" id="screen-cata">
+  <header class="info-header">
+    <button class="info-back" onclick="goHome()">Voltar</button>
+    <div class="info-hdr-row">
+      <div class="screen-icon screen-icon-blue">🪑</div>
+      <h2 class="info-title">Catabugiganga</h2>
+    </div>
+  </header>
+  <div class="info-body">
+    <p>O Catabugiganga é um serviço público da prefeitura de Itatiba que recolhe o descarte de móveis, objetos de madeira, eletrodomésticos, sucatas de ferro, alumínio, além de roupas e calçados não utilizáveis.</p>
+    <h3 class="section-label">Dúvidas comuns</h3>
+    <div class="accordion">
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">O que posso descartar para o Catabugiganga? <div class="acc-chevron">▼</div></button>
+        <div class="acc-body">
+        <ul>
+  <li><strong>Móveis</strong> como sofás, colchões, poltronas, cadeiras etc</li>
+  <li><strong>Eletrodomésticos</strong> como TVs, máquina de lavar, geladeira etc</li>
+  <li><strong>Madeiras</strong> – exceto madeira de construção</li>
+  <li>
+    <strong>Móveis plásticos de grande dimensão </strong> como bancos, cadeiras, cadeiras de praia etc.
+  </li>
+  <li>Entre outros itens volumosos</li>
+</ul>
+
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">O que NÃO posso descartar para o Catabugiganga? <div class="acc-chevron">▼</div></button>
+        <div class="acc-body">
+
+        <ul>
+  <li>
+    <strong>Resíduos de construção civil:</strong>
+    entulho, madeiras de construção, forros, telhas, latas de tinta, etc.
+  </li>
+  <li><strong>Roupas inservíveis</strong>, que não pode ser usadas</li>
+  <li><strong>Lâmpadas</strong>, descarte no Atacarejo Assaí</li>
+  <li><strong>Materiais recicláveis comuns</strong>, descarte na <a onclick="showScreen('screen-seletiva')" class="link-eco">Coleta seletiva</a>  do seu bairro ou em leve até um <a onclick="showScreen('screen-ecopontos')" class="link-eco">Ecoponto</a></li>
+  <li>
+    <strong>Resíduos do tipo domiciliar:</strong>
+    restos de comida, papeis higiênicos, fraldas, dejetos de animais etc. Descarte normalmente na <a onclick="showScreen('screen-domiciliar')" class="link-eco">Coleta domiciliar</a> do seu bairro.
+  </li>
+  <li>
+    <strong>Resíduos verdes:</strong>
+    podas de árvores, folhas, gramas, restos de jardinagem. Leve até um <a onclick="showScreen('screen-ecopontos')" class="link-eco">Ecoponto</a>.
+  </li>
+  <li><strong>Óleo de cozinha</strong>, leve até um ponto do <a onclick="showScreen('screen-oleo-do-bem')" class="link-eco">Óleo do bem</a>, cada litro de óleo pode ser trocado por uma barra de sabão.</li>
+</ul>
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">Como descartar o lixo para o Catabugiganga? <div class="acc-chevron">▼</div></button>
+        <div class="acc-body">
+<ul>
+
+  <li>
+    Em caso de móveis, <strong>desmonte o móvel se possível</strong> para facilitar o transporte
+  </li>
+  <li>
+    Coloque o descarte na frente de sua casa ou loja
+    <strong>no horário (antes das 7h) e no dia de coleta do seu bairro</strong>
+  </li>
+  <li>
+    Arrume o descarte na calçada de modo a
+    <strong>evitar acúmulo de água</strong>
+  </li>
+    <li>
+    <strong>Se possível, não deixe pregos ou parafusos expostos</strong> a fim de não machucar o funcionário
+  </li>
+</ul>
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">🚫​ Não faça isso! <div class="acc-chevron">▼</div></button>
+        <div class="acc-body">
+<ul>
+  <li>
+    <strong>NÃO</strong> deixe o seu descarte na calçada dias antes da coleta. Se tem pressa, leve o descarte até um <a onclick="showScreen('screen-ecopontos')" class="link-eco">Ecoponto</a>.
+  </li>
+
+  <li>
+    <strong>NÃO</strong> deixe o seu descarte na frente da casa ou loja de outros, praças, terrenos vazios etc.
+    <em>(esse ato é considerado descarte irregular e está sujeito a multa)</em>.
+  </li>
+
+  <li>
+    <strong>NÃO</strong> descarte em dia e horário diferente
+    da coleta para o bairro. Procure o dia e horário da coleta na página inicial do app.
+  </li>
+
+  <li>
+    <strong>NÃO</strong> misture <strong>resíduos volumosos</strong>
+    (<a onclick="showScreen('screen-cata')" class="link-eco">Catabugiganga</a>) com os <strong>materiais recicláveis</strong>. Os recicláveis podem ser levados em um <a onclick="showScreen('screen-ecopontos')" class="link-eco">Ecoponto</a> ou coletados pela <a onclick="showScreen('screen-seletiva')" class="link-eco">Coleta seletiva</a> do seu bairro.
+  </li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+    <div style="padding:16px 0 0;font-size:12px;color:var(--text-3)">🔗 Fonte: <a href="https://itatiba.sp.gov.br/coletadomiciliar" target="_blank" class="link-plain">Site da Prefeitura de Itatiba</a></div>
+    <footer class="footer">2026 · Calendário da coleta de lixo<br>Dados públicos obtidos da <a href="https://www.itatiba.sp.gov.br" target="_blank">Prefeitura de Itatiba</a><br><br><a onclick="showScreen('screen-sobre')">Sobre esse app</a> · <a onclick="showScreen('screen-termos')">Termos de uso</a> · <a onclick="showScreen('screen-sobre')">Avisar sobre erros</a></footer>
+  </div>
+</article>
+
+<!-- ONDE DESCARTO -->
+<article class="screen" id="screen-outros-descartes">
+  <header class="info-header" style="background:var(--g-dark)">
+    <button class="info-back" onclick="goHome()">Voltar</button>
+    <div class="info-hdr-row">
+      <div class="screen-icon screen-icon-green">📦</div>
+      <h2 class="info-title">Onde descarto isso?</h2>
+    </div>
+  </header>
+  <div class="info-body">
+    <div class="accordion">
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">Óleo de cozinha usado <div class="acc-chevron">▼</div></button>
+        <div class="acc-body">
+          <ul>
+            <li>A cidade de Itatiba participa do projeto <strong>Óleo do Bem</strong> com vários pontos de coleta em escolas, postos de saúde, SABESP e outros. Traga 1 litro de óleo usado e ganhe 1 barra de sabão ecológico! <a onclick="showScreen('screen-oleo-do-bem')" class="link-green">Veja aqui os pontos de coleta</a>· Se preferir, visite o <a href="https://oleodobem.com/" target="_blank" style="color:var(--g-mid);font-weight:600;text-decoration:none">Website do Óleo do Bem</a></li>
+            <li>Atacarejo <strong>Assaí</strong></li>
+             <li>Atacarejo <strong>Tenda</strong></li>
+          </ul>
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">Eletrônicos <div class="acc-chevron">▼</div></button>
+        <div class="acc-body">
+          <ul>
+            <li><a onclick="showScreen('screen-ecopontos')" class="link-green">Ecopontos</a></li>
+            <li>Magazine Luiza</li>
+          </ul>
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">Lâmpadas de LED e fluorescentes <div class="acc-chevron">▼</div></button>
+        <div class="acc-body">
+          <ul>
+            <li>Atacarejo <strong>Assaí</strong></li>
+          </ul>
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">EPS (Isopor) <div class="acc-chevron">▼</div></button>
+        <div class="acc-body">
+          <ul>
+            <li>Descarte na <a onclick="showScreen('screen-seletiva')" class="link-green">Coleta Seletiva</a> do seu bairro</li>
+            <li><a onclick="showScreen('screen-ecopontos')" class="link-green">Ecopontos</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">Pneus e peças automotivas <div class="acc-chevron">▼</div></button>
+        <div class="acc-body">
+          <ul>
+            <li><a onclick="showScreen('screen-ecopontos')" class="link-green">Ecopontos</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">Restos de construção civil <div class="acc-chevron">▼</div></button>
+        <div class="acc-body">
+          <ul>
+            <li><a onclick="showScreen('screen-ecopontos')" class="link-green">Ecopontos</a> — até 1m³ por semana</li>
+          </ul>
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">Restos de poda e plantas <div class="acc-chevron">▼</div></button>
+        <div class="acc-body">
+          <ul>
+            <li><a onclick="showScreen('screen-ecopontos')" class="link-green">Ecopontos</a> — até 1m³ por semana</li>
+          </ul>
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">Móveis e restos de madeira <div class="acc-chevron">▼</div></button>
+        <div class="acc-body">
+          <ul>
+            <li><a onclick="showScreen('screen-ecopontos')" class="link-green">Ecopontos</a></li>
+            <li>Coleta do <a onclick="showScreen('screen-cata')" class="link-green">Catabugiganga</a> do seu bairro</li>
+          </ul>
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">Medicamentos vencidos ou não <div class="acc-chevron">▼</div></button>
+        <div class="acc-body">
+          <ul>
+            <li>Farmácias</li>
+          </ul>
+        </div>
+      </div>
+      <div class="acc-item">
+        <button class="acc-trigger" onclick="toggleAcc(this)">Recicláveis <div class="acc-chevron">▼</div></button>
+        <div class="acc-body">
+          <ul>
+            <li><a onclick="showScreen('screen-seletiva')" class="link-green">Coleta Seletiva</a> do seu bairro</li>
+            <li>Descarte no <a onclick="showScreen('screen-ecopontos')" class="link-green">Ecoponto</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <footer class="footer">2026 · Calendário da coleta de lixo<br>Dados públicos obtidos da <a href="https://www.itatiba.sp.gov.br" target="_blank">Prefeitura de Itatiba</a><br><br><a onclick="showScreen('screen-sobre')">Sobre esse app</a> · <a onclick="showScreen('screen-termos')">Termos de uso</a> · <a onclick="showScreen('screen-sobre')">Avisar sobre erros</a></footer>
+  </div>
+</article>
+
+<!-- ÓLEO DO BEM -->
+<article class="screen" id="screen-oleo-do-bem">
+  <header class="info-header info-header--amber">
+    <button class="info-back" onclick="goHome()">Voltar</button>
+    <div class="info-hdr-row">
+      <div class="screen-icon screen-icon-light">🤗</div>
+      <h2 class="info-title">Óleo do Bem</h2>
+    </div>
+  </header>
+  <div class="info-body">
+    <p>A cidade de Itatiba participa do projeto <a href="https://oleodobem.com/" target="_blank" class="link-plain">Óleo do Bem</a> com vários pontos de coleta em escolas, postos de saúde, SABESP e outros.</p>
+    <p>🧼 <strong>Traga 1 litro de óleo de cozinha usado e ganhe 1 barra de sabão ecológico!</strong></p>
+    <div class="instr-card">
+      <h3 class="section-label">Como fazer?</h3>
+      <ul>
+        <li>Espere o óleo esfriar na panela</li>
+        <li>Armazene em uma garrafa plástica</li>
+        <li>Junte 1 litro e leve ao ponto de coleta</li>
+        <li>Receba 1 barra de sabão ecológico a cada 1 litro de óleo doado</li>
+      </ul>
+    </div>
+    <div class="accordion" id="oleo-accordion"></div>
+    <footer class="footer">2026 · Calendário da coleta de lixo<br>Dados públicos obtidos da <a href="https://www.itatiba.sp.gov.br" target="_blank">Prefeitura de Itatiba</a><br><br><a onclick="showScreen('screen-sobre')">Sobre esse app</a> · <a onclick="showScreen('screen-termos')">Termos de uso</a> · <a onclick="showScreen('screen-sobre')">Avisar sobre erros</a></footer>
+  </div>
+</article>
+
+<!-- ECOPONTOS -->
+<article class="screen" id="screen-ecopontos">
+  <header class="info-header" style="background:var(--eco)">
+    <button class="info-back" onclick="goHome()">Voltar</button>
+    <div class="info-hdr-row">
+      <div class="screen-icon screen-icon-eco">🛢️</div>
+      <h2 class="info-title">Ecopontos</h2>
+    </div>
+  </header>
+  <div class="info-body">
+    <p>Os Ecopontos são locais criados pela Prefeitura para o descarte de recicláveis, eletrônicos, restos de construção e volumosos como móveis.</p>
+    <p>Quando você não pode esperar o dia da <a onclick="showScreen('screen-seletiva')" class="link-eco">Coleta Seletiva</a> ou do <a onclick="showScreen('screen-cata')" class="link-eco">Catabugiganga</a>, leve o rejeito até um Ecoponto.</p>
+    <p>Siga as orientações do funcionário para manter o local limpo e organizado.</p>
+    <div class="instr-card">
+      <h3 class="section-label">Antes de ir ao Ecoponto</h3>
+      <ul>
+        <li>Separe o material por tipo, respeitando o que pode e o que não pode ser recebido no Ecoponto. Os resíduos devem ser agrupados em embalagem adequada.</li>
+        <li>Desmonte os resíduos de grande volume, como madeiras, sofás, móveis de forma a caber dentro das caçambas dos ecopontos.</li>
+      </ul>
+    </div>
+    <div class="instr-card">
+      <h3 class="section-label">Ao chegar no Ecoponto</h3>
+      <ul>
+        <li>Informar ao servidor o material que pretende descartar para que ele oriente os locais e forma correta de depositar ou armazenar.</li>
+        <li>Acondicionar os materiais de forma a evitar o acúmulo de água.</li>
+        <li>Não é permitido nenhum tipo de negociação (compra ou venda) de resíduos no interior do Ecoponto.</li>
+        <li>Não é permitido que munícipes retirem qualquer material do Ecoponto.</li>
+        <li>Os catadores informais de material reciclável são considerados como usuários do Ecoponto e deverão obedecer a todas as regras.</li>
+        <li>É proibido o descarte de qualquer tipo de lixo ou resíduo próximo ao Ecoponto.</li>
+      </ul>
+    </div>
+    <div style="background:var(--eco-light);border-radius:var(--r-md);border:1px solid var(--eco-soft);padding:12px 16px;margin-bottom:12px;font-size:13px;color:#6B2178;line-height:1.8">
+      <p style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">🕐 Funcionamento</p>
+      2ª a 6ª das 08:00 às 11:30 e das 13:00 às 17:30<br>
+      Sábados das 08:00 às 12:00<br>
+      Exceto feriados
+    </div>
+    <div class="accordion" id="ecopontos-accordion"></div>
+    <footer class="footer">2026 · Calendário da coleta de lixo<br>Dados públicos obtidos da <a href="https://www.itatiba.sp.gov.br" target="_blank">Prefeitura de Itatiba</a><br><br><a onclick="showScreen('screen-sobre')">Sobre esse app</a> · <a onclick="showScreen('screen-termos')">Termos de uso</a> · <a onclick="showScreen('screen-sobre')">Avisar sobre erros</a></footer>
+  </div>
+</article>
+
+<!-- DENÚNCIA -->
+<article class="screen" id="screen-denuncia">
+  <header class="info-header" style="background:#8B2020">
+    <button class="info-back" onclick="goHome()">Voltar</button>
+    <div class="info-hdr-row">
+      <div class="card-icon" style="background:rgba(255,255,255,0.15);">🚨</div>
+      <h2 class="info-title">Denunciar descarte irregular</h2>
+    </div>
+  </header>
+  <div class="info-body" style="display:flex;flex-direction:column;gap:16px">
+    <p>O descarte irregular é quando alguém joga lixo, entulho ou outros rejeitos em local impróprio, por exemplo, às margens de rios, em frente a terrenos vazios ou na frente da casa de outra pessoa.</p>
+    <div class="aviso">
+      <h3>Essa denúncia é anônima, não precisa se identificar</h3>
+      <p>Quando ver alguém descartando lixo, entulho e outros em local impróprio, fotografe ou filme e ligue para a GM Ambiental:</p>
+    </div>
+<section class="instr-card">
+
+  <div class="contact-block">
+    <h3 class="contact-title">Telefone</h3>
+
+    <address class="contact-text">
+      <strong>GM Ambiental:</strong>
+      <a href="tel:+551145244721" class="link-plain">(11) 4524-4721</a>  -
+      <a href="tel:+551145243577" class="link-plain">(11) 4524-3577</a>
+      <br>
+
+      <strong>Setor de Fiscalização:</strong>
+      <a href="tel:+551131830729" class="link-plain">(11) 3183-0729</a>
+    </address>
+  </div>
+
+  <div class="contact-block contact-block--border">
+    <h3 class="contact-title">E-mail</h3>
+
+    <address>
+      <a class="contact-email" href="/cdn-cgi/l/email-protection#5b363e32343a3639323e352f3e1b672c392965363e32343a3639323e352f3e75322f3a2f32393a75282b753c342d753929">
+        <span class="__cf_email__" data-cfemail="0c616965636d616e65696278694c616965636d616e65696278692265786d78656e6d227f7c226b637a226e7e">[email&#160;protected]</span>
+      </a>
+    </address>
+  </div>
+
+</section>
+    <div class="alert alert-danger">
+      <p>A pessoa flagrada está sujeita a multa.</p>
+    </div>
+
+
+      <p>Ao entrar em contato, envie o endereço exato e tente conseguir informações como:</p>
+      <ul>
+        <li>Nome da pessoa que está fazendo descarte ilegal</li>
+        <li>Endereço do infrator</li>
+        <li>Placa do veículo</li>
+      </ul>
+    <footer class="footer">2026 · Calendário da coleta de lixo<br>Dados públicos obtidos da <a href="https://www.itatiba.sp.gov.br" target="_blank">Prefeitura de Itatiba</a><br><br><a onclick="showScreen('screen-sobre')">Sobre esse app</a> · <a onclick="showScreen('screen-termos')">Termos de uso</a> · <a onclick="showScreen('screen-sobre')">Avisar sobre erros</a></footer>
+
+  </div>
+</article>
+
+<script>
+// ── NAVEGAÇÃO ─────────────────────────────────────────────────────────────────
+function isDesktop(){ return window.innerWidth >= 860; }
+
+const HASH_MAP = {
+  '': 'screen-home',
+  'home': 'screen-home',
+  'domiciliar': 'screen-domiciliar',
+  'seletiva': 'screen-seletiva',
+  'cata': 'screen-cata',
+  'ecopontos': 'screen-ecopontos',
+  'oleo-do-bem': 'screen-oleo-do-bem',
+  'onde-descarto': 'screen-outros-descartes',
+  'denuncia': 'screen-denuncia',
+  'sobre': 'screen-sobre',
+  'termos': 'screen-termos',
+};
+const HASH_REV = Object.fromEntries(Object.entries(HASH_MAP).map(([k,v])=>[v,k]).filter(([k])=>k));
+
+function showScreen(id){
+  const hash = HASH_REV[id] || '';
+  try {
+    if(location.hash !== '#' + hash){
+      history.pushState(null, '', hash ? '#' + hash : location.pathname);
+    }
+  } catch(e) {} // blocked in iframe preview
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const el = document.getElementById(id);
+  if(el) el.classList.add('active');
+  window.scrollTo(0,0);
+  // Re-render dynamic accordions
+  if(id==='screen-oleo-do-bem') renderOleoAccordion();
+  if(id==='screen-ecopontos') renderEcopontosAccordion();
+}
+
+function goHome(){ showScreen('screen-home'); }
+window.goHome = goHome;
+
+function routeFromHash(){
+  const hash = location.hash.replace('#','');
+  const id = HASH_MAP[hash] || 'screen-home';
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const el = document.getElementById(id);
+  if(el) el.classList.add('active');
+  if(id==='screen-oleo-do-bem') setTimeout(renderOleoAccordion,0);
+  if(id==='screen-ecopontos') setTimeout(renderEcopontosAccordion,0);
+}
+window.addEventListener('popstate', routeFromHash);
+
+function toggleAcc(btn){ btn.closest('.acc-item').classList.toggle('open'); }
+window.toggleAcc = toggleAcc;
+
+// ── ECOPONTOS DATA (fonte única) ──────────────────────────────────────────────
+const ECOPONTOS_MAP = {
+  "jardim vitoria":       {nome:"Ecoponto Jardim Vitória",       endereco:"Travessa Idalina Leardine, nº 01",       ref:"Ao lado da EMEB Profa Sonia Rita Penteado Aguiar Santos"},
+  "parque san francisco": {nome:"Ecoponto San Francisco",         endereco:"Travessa Lázara Padilha Silva, s/n",     ref:"Ao lado do CEMEI Maria Moraes de Oliveira"},
+  "jardim novo horizonte":{nome:"Ecoponto Jardim Novo Horizonte", endereco:"Rua Luiz Jarussi, nº 1000",              ref:"Ao lado da UBS Alaíde Maria da Silva"},
+  "porto seguro":         {nome:"Ecoponto Porto Seguro",          endereco:"Rua Urbano Bezana, nº 250",              ref:"Ao lado da EMEB Eliete Ap. Sanfins Fusussi"},
+  "jardim das nacoes":    {nome:"Ecoponto Jardim das Nações",     endereco:"Av. Vicente Catalani, nº 1685",          ref:"Ao lado do CEMEI Francisca de Castro Camargo"}
+};
+const ECOPONTOS_BAIRROS = new Set(Object.keys(ECOPONTOS_MAP));
+
+// ── COLETA RECICLÁVEL ─────────────────────────────────────────────────────────
+const RECICL = [
+  // SEGUNDA
+  "Centro","Asilo","Cavani","Cemitério","Chacara Bredariol","Chacara Piovesana","Cidade Jardim",
+  "João Maggi","Vila Hércules","Jardim Aurélia","Jardim Coronel Peroba","Jardim do Engenho",
+  "Jardim Ipe","Jardim Matheus","Jardim Nossa Senhora de Fatima","Jardim Nova Itatiba",
+  "Jardim Nova Itatiba II","Jardim Sant Anna","Jardim Santa Luzia","Jardim São Jose",
+  "Jardim Sao Luiz II","Jardim Tereza","Juliani","Lanfranchi","Morrão da Força",
+  "Loteamento Res. Fazenda Santa Rosa - Fase 1 (Portal San Giovani)",
+  "Doutor Luiz De Mattos Pimenta (CECAP)","Parque Linear","Parque São Vicente",
+  "Residencial Central Park I","Residencial Sitio do Engenho (Giardino D'Italia)","Rua Jundiaí",
+  "Vila Bela Vista","Vila Belem","Vila Brasileira","Vila Cassaro","Vila Cremonesi",
+  "Vila Pabreu","Vila Segatto","Condominio Residencial Beija-Flor","Sesi",
+  "Loteamento Parque dos Canarios","Reserva Santa Rosa",
+  // TERÇA
+  "Bairro Santo Antonio","Chacara Boa Fe","Condomínio Angelo Fattori",
+  "Condominio Residencial Fumachi","Condominio Residencial Ouro","Feira Jardim México",
+  "Fernando Momentel","Irmaos Mutton (Vila Mutton)","Jardim Alice","Jardim Alto da Santa Cruz",
+  "Jardim Alves da Silva","Jardim América","Jardim Aniele","Jardim Delforno I","Jardim Delforno II",
+  "Jardim Esplanada","Jardim Lucia","Jardim Lucia II","Jardim Maria","Jardim México",
+  "Jardim Morumbi","Jardim Nardin","Jardim Nice","Jardim Nossa Senhora das Gracas",
+  "Jardim Nova America I","Jardim Nova America II","Jardim Novo Horizonte","Jardim Salessi",
+  "Jardim Santa Adelina","Jardim Santo Antonio","Jardim São João","Jardim Vitória",
+  "Jose Moraes Barbosa","Jardim Panorama","Jardim Verona","Jardim Botânico","Quinta da Boa Vista",
+  "Loteamento Res. Villa Ravenna","Loteamento Res. Village de Piemonte (Pio Monte)",
+  "Piu Verde","Abramo Delforno","Jardim Carlos Borella","Jardim Harmonia",
+  "Joao Corradini","Joao Corradini-2 Etapa","Vale Verde","Parque Residencial Elisa Tescarollo",
+  "Portal da Colina","Recanto do Parque","Rei de Ouro","Residencial Flamboyant","Residencial Privilege",
+  "Av. Verginio Belgini","Vila Tescarollo","Vila Capeletto","Vila Carrara","Vila Centenário",
+  "Vila Cristo Redentor","Vila Fassina","Vila Jarussi I","Vila Jarussi II","Vila Penteado",
+  "Vila Petti","Vila Prudente de Moraes","Vila Rita","Vila Santa Cruz","Vila Santa Terezinha",
+  "Vila São Caetano","Vila Trevisoni","SABESP","Quinta dos Bons Ventos",
+  // QUARTA
+  "Atrás do Posto Tres Irmaos","Caminhos do Sol","Centro Empresarial Roque Faccina",
+  "Cocais","Condomínio Getúlio Luvison","Jardim das Laranjeiras","Condominio Ville de Chamonix",
+  "Estrada do Pinheirinho","Estrada Mun. Alexandre Gava","Estrada Mun. Domingas Bicharelli Carrara",
+  "Estrada Mun. Jose Tafarello","Estrada Mun. Leopoldino Bortolossi (Serra dos Cocais)",
+  "Estrada Mun. Pedro Quaglia","Estrada Vic. Luiz Suzan","Fazenda Atibainha","Jardim do Leste",
+  "Jardim dos Lagos","Jardim Galetto","Jardim Monte Verde","Jardim Nova Esperança","Jardim Sao Luiz",
+  "Horizonte Azul","Jardim Virgínia","Loteamento Res. Parque Aracema","Loteamento Vila Real",
+  "Mall","Mombuca","Pedro Fumachi","Pedro Costa","Padovani","Parque da Colina I","Parque da Colina II",
+  "Loteamento Parque da Colina III","Parque Empresarial Adelelmo Corradini",
+  "Parque Industrial San Francisco","Parque San Francisco","Recanto da Paz",
+  "Recanto dos Pássaros","Recreio Costa Verde","Loteamento Alpes do Cruzeiro",
+  "Residencial Central Park II","Residencial Fazenda Serrinha (Itatiba Country Club)",
+  "Residencial Terras de Santa Cruz","Rota das Bandeiras","Ville de France","Sete Lagos",
+  "Estrada Mun. Alcebíades Stefani (Condomínio Glebas de San Diego)","Escola Literatus",
+  "Av. Eduardo Rodrigues Aniceto","Bairro do Morro","Palmeirinha","Bairro do Porto","Indústria Têxtil Belém","Marginal D'Pedro I",
+  // QUINTA
+  "Hospital Itatiba","Av. 29 de Abril","Av. Guerino Grisotti","Av. Mal. Castelo Branco",
+  "Citrus Pomar São Jorge","Morada das Fontes","Fioravante Polessi","Bairro da Ponte",
+  "Distrito Industrial Alfredo Rela","Bairro dos Leite","Encosta do Sol",
+  "Estrada Mun. Antonio Paulo Francisco Lanfranchi","Estrada Mun. Sergio Luiz Canal",
+  "Estrada Mun. Tereza Bernardes","Fazenda Alagada","Fazenda Girolanda","Fazenda Malabar",
+  "Fazenda Pereiras","Jardim Arizona","Jardim das Laranjeiras","Jardim das Paineiras",
+  "Jardim de Lucca","Jardim Dona Leonor","Jardim Dona Leonor II","Jardim Ester",
+  "Jardim Santa Rosa","Jardim Stella","Dolce Vita","Portal Giardino (Pateo do Colegio)",
+  "Loteamento Res. Rio das Flores (Condomínio Ecologie)","Loteamento Res. Terras da Fazenda",
+  "Vale das Águas","Loteamento Vivendas do Engenho D'Água I","Loteamento Vivendas do Engenho D'Água II",
+  "Loteamento Vivendas do Engenho D'Água III","Mercadão","Morada dos Pássaros",
+  "Roberto Panzarin (Jatobá)","Porto Seguro","Parque da Fazenda","Parque da Juventude",
+  "Parque Industrial Itatiba","Parque Nova Xampirra","São Gabriel","Rancho Paumar",
+  "Recanto do Atibaia","Recanto Princesa da Colina","Itatiba Park","Residencial Paradiso",
+  "Rodovia Itatiba – Jundiaí","Rua Antonio Pedro Fagundes","Rua Luiz Scavone",
+  "Sitio Santa Rita de Cassia","Tapera Grande","Venda Nova","Vila Santa Clara","Xampirra",
+  "Estrada Mun. João Bianco","Aparecidinha","Itapema",
+  // SEXTA
+  "Recanto Beira Rio","Av. Jose Piovesan Netto","Estrada Mun. Irene Perobelli Fumachi",
+  "Aida Haddad Jafet","Artvinco","Chacara San Martin I","Chacara San Martin II",
+  "Santa Cruz dos Pires","Clube de Campo Fazenda","Condominio Cachoeiras do Imarata",
+  "Condominio Capela do Barreiro","Condomínio Itaembu","Condominio Sitio da Moenda",
+  "Condominio Terras de Savion","Loteamento Alpes do Cruzeiro","Estrada Mun. Antonio Aquilis Rigolo Filho",
+  "Estrada Mun. Joao Bulgarelli","Hotel Dona Carolina","Jardim Ana Maria","Jardim das Nações",
+  "Jardim Paladino","Jardim Santa Filomena","Jardim Santa Filomena II","Jardim Sao Marcos",
+  "Loteamento Fazenda Dona Carolina","Loteamento Res. Bosque dos Pires",
+  "Loteamento Res. Praca Ventura","Terra Nova","Loteamento Villagio Fosuzzi","Morro Azul",
+  "Prefeito Erasmo Chrispim","Afonso Zupardo","Nívea","Novo Cruzeiro","Pedreira","Pico Alto",
+  "Real Parque D Pedro I","Recanto das Estrelas","Residencial Grêmio","Residencial Moenda",
+  "Summertime-B Barreiro","Terras de San Marco","Terras de Sao Sebastiao","Valeo",
+  "Vila Cruzeiro","Village das Palmeiras","Zoológico","Marginal Portico"
+];
+const R_BREAKS=[0,43,113,171,232,280];
+const R_DAYS=[2,3,4,5,6];
+
+// ── CATABUGIGANGA ─────────────────────────────────────────────────────────────
+const ROTAS={
+  1:{b:["Condominio Residencial Beija-Flor","Residencial Central Park I","Residencial Central Park II","Centro","Residencial Flamboyant","Jardim Arizona","Jardim Ester","Morada dos Pássaros","Reserva Santa Rosa","Loteamento Res. Fazenda Santa Rosa - Fase 1 (Portal San Giovani)","Sesi","Vila Segatto","Loteamento Villagio Fosuzzi","Village das Palmeiras"],d:["23/01","23/02","23/03","22/04","21/05","19/06","20/07","17/08","16/09","15/10","13/11","14/12"]},
+  2:{b:["Chacara Piovesana","Cidade Jardim","Itatiba Park","Jardim Aurélia","Fioravante Polessi","João Maggi","Juliani","Aida Haddad Jafet","Jardim de Lucca","Jardim Matheus","Jardim Sao Luiz II","Jardim Tereza","Parque São Vicente","Vila Santa Clara","Jardim São Jose","Vila Hércules","Vila Cassaro","Loteamento Villagio Fosuzzi"],d:["26/01","24/02","24/03","23/04","22/05","22/06","21/07","18/08","17/09","16/10","16/11","15/12"]},
+  3:{b:["Dolce Vita","Fioravante Polessi","João Maggi","Aida Haddad Jafet","Novo Cruzeiro","Parque San Francisco","Jardim das Amoreiras","Jardim Paladino","Jardim do Leste","Jardim Sao Marcos","Padovani"],d:["27/01","25/02","25/03","24/04","25/05","23/06","22/07","19/08","18/09","19/10","17/11","16/12"]},
+  4:{b:["Alto de Fátima","Jardim do Engenho","Jardim Santa Filomena","Juliani","Afonso Zupardo","Jardim Paladino","Jardim do Leste","Vila Brasileira","Novo Cruzeiro","Parque da Colina I","Parque da Colina II","Jardim das Laranjeiras"],d:["28/01","26/02","26/03","27/04","26/05","24/06","23/07","20/08","21/09","20/10","18/11","17/12"]},
+  5:{b:["Jardim Ipe","Jardim Santa Filomena I e II","Prefeito Erasmo Chrispim","Jardim Sao Marcos","Res. Vista da Mata","Terra Nova"],d:["29/01","27/02","27/03","28/04","27/05","25/06","24/07","21/08","22/09","21/10","19/11","18/12"]},
+  6:{b:["Loteamento Alpes do Cruzeiro","Jardim Coronel Peroba","Pedro Fumachi","Jardim das Amoreiras","Parque da Colina I","Parque da Colina II","Jardim das Laranjeiras"],d:["02/01","30/01","02/03","30/03","29/04","28/05","26/06","27/07","24/08","23/09","22/10","23/11","21/12"]},
+  7:{b:["Casas Novas","Pedro Fumachi","Residencial Fazenda Serrinha (Itatiba Country Club)","Jardim Paladino"],d:["05/01","02/02","03/03","31/03","30/04","29/05","29/06","28/07","25/08","24/09","23/10","24/11","22/12"]},
+  8:{b:["Horizonte Azul","Jardim das Amoreiras","Jardim do Leste"],d:["06/01","03/02","04/03","01/04","04/05","01/06","30/06","29/07","26/08","25/09","26/10","25/11","23/12"]},
+  9:{b:["Jardim Aniele","Jardim Delforno I","Jardim Delforno II","Jardim Nice","Jardim Salessi","Morrão da Força","Quinta da Boa Vista","Vale Verde","Vila Capeletto","Vila Carrara","Vila Cristo Redentor","Vila Fassina","Vila Penteado","Vila Mutton","Vila Pabreu","Vila Petti","Vila São Caetano","Vila Trevisoni","Vila Prudente de Moraes"],d:["07/01","04/02","05/03","02/04","05/05","02/06","01/07","30/07","27/08","28/09","27/10","26/11","24/12"]},
+  10:{b:["Jardim América","Jardim Harmonia","Jardim Lucia","Jardim Lucia II","Jardim México","Jardim Verona","Jardim Vitória","Vila Centenário","Parque Residencial Elisa Tescarollo","Vila Tescarollo","Vila Rita","Vila Santa Terezinha"],d:["08/01","05/02","06/03","06/04","06/05","03/06","02/07","31/07","28/08","29/09","28/10","27/11","28/12"]},
+  11:{b:["Av. Verginio Belgini","Jardim Alves da Silva","Residencial Flamboyant","Jardim Alice","Jardim Alto da Santa Cruz","Jardim Carlos Borella","Jardim das Laranjeiras","Jardim Esplanada","Jardim Maria","Jardim Morumbi","Jardim Nardin","Jardim Panorama","Jardim Santo Antonio","Jardim São João","Juliani","Recanto do Parque","Vila Santa Cruz","Jardim Botânico","Loteamento Vila Real","Ville de France"],d:["09/01","06/02","09/03","07/04","07/05","05/06","03/07","03/08","31/08","30/09","29/10","30/11","29/12"]},
+  12:{b:["Av. Eduardo Rodrigues Aniceto","Joao Corradini","Joao Corradini-2 Etapa","Jardim Alice","Jardim das Laranjeiras","Jardim Maria","Morada das Fontes","Abramo Delforno","Jardim dos Lagos","Jardim Virgínia","Jardim Novo Horizonte","Sete Lagos","Jardim das Paineiras"],d:["12/01","09/02","10/03","08/04","08/05","08/06","06/07","04/08","01/09","01/10","30/10","01/12","30/12"]},
+  13:{b:["Loteamento Vivendas do Engenho D'Água I","Loteamento Vivendas do Engenho D'Água II","Loteamento Vivendas do Engenho D'Água III","Fazenda Girolanda","Fazenda Malabar","Jardim Panorama","Jardim Nardin","Abramo Delforno","Piu Verde","Mombuca","Nova Suiça","Atrás do Posto Tres Irmaos"],d:["13/01","10/02","11/03","09/04","11/05","09/06","07/07","05/08","02/09","02/10","03/11","02/12","31/12"]},
+  14:{b:["Asilo","Bairro do Porto","Bairro da Ponte","Caminhos do Sol","Condominio Ville de Chamonix","Fazenda Atibainha","Jardim Leonor","Jardim dos Lagos","Malibu","Jardim Virgínia","Palmeirinha"],d:["14/01","11/02","12/03","10/04","12/05","10/06","08/07","06/08","03/09","05/10","04/11","03/12"]},
+  15:{b:["Bairro da Ponte","Bairro Ponte Nova","Estrada Mun. João Bianco","Fazenda Pereiras","Hospital Itatiba","Jardim Leonor","Malibu"],d:["15/01","12/02","13/03","13/04","13/05","11/06","10/07","07/08","04/09","06/10","05/11","04/12"]},
+  16:{b:["Aparecidinha","Jardim das Nações","Itapema","Chacara da Monica","Citrus Pomar São Jorge","Distrito Industrial","Encosta do Sol","Posto do Marinho","Parque da Fazenda","Recanto Princesa da Colina","Loteamento Res. Rio das Flores (Condomínio Ecologie)","São Gabriel","Tapera Grande","Vale das Águas","Venda Nova"],d:["16/01","13/02","16/03","14/04","14/05","12/06","13/07","10/08","09/09","07/10","06/11","07/12"]},
+  17:{b:["Cocais","Condomínio Itaembu","Jardim Nova Esperança","Condomínio Getúlio Luvison","Jardim Galetto","Parque São Vicente","Recreio Costa Verde"],d:["19/01","16/02","17/03","15/04","15/05","15/06","14/07","11/08","10/09","08/10","09/11","08/12"]},
+  18:{b:["Clube de Campo Fazenda","Baroneza Offices","Condominio Sitio da Moenda","Loteamento Res. Bosque dos Pires","Condominio Residencial Ouro","Escola dos Pires","Jardim Monte Verde","Pico Alto","Santa Cruz dos Pires","Sitio dos Camargo","Sitio dos Baianos","Summertime-B Barreiro"],d:["20/01","18/02","18/03","16/04","18/05","16/06","15/07","12/08","11/09","09/10","10/11","09/12"]},
+  19:{b:["Artvinco","Condominio Cachoeiras do Imarata","Bobst","Chácara San Martin","Jardim Ana Maria","Residencial Grêmio","Morro Azul","Pedra de Ouro","Real Parque D Pedro I","Pinheirinho","Recanto das Estrelas"],d:["21/01","19/02","19/03","17/04","19/05","17/06","16/07","13/08","14/09","13/10","11/11","10/12"]},
+  20:{b:["Alambique do Franciscon","Condominio Cachoeiras do Imarata","Chácara San Martin","Jardim Ana Maria","Marginal Portico","Residencial Grêmio","Morro Azul","Pinheirinho","Recanto das Estrelas","Xampirra I","Xampirra II"],d:["22/01","20/02","20/03","20/04","20/05","18/06","17/07","14/08","15/09","14/10","12/11","11/12"]}
+};
+
+// ── COLETA DOMICILIAR ─────────────────────────────────────────────────────────
+const D={A:{dias:[2,3,4,5,6,7],h:"diurno"},N:{dias:[2,3,4,5,6,7],h:"noturno"},B:{dias:[2,4,6],h:"diurno"},C:{dias:[2,4,6],h:"noturno"},E:{dias:[3,5,7],h:"diurno"},F:{dias:[3,5,7],h:"noturno"}};
+const DOMICILIAR={"Asilo":D.A,"Av. Guerino Grisotti":D.A,"Av. Mal. Castelo Branco":D.A,"Condominio Residencial Beija-Flor":D.A,"Fioravante Polessi":D.A,"Cooperativa Reviver":D.A,"Cavani":D.A,"Jardim Ester":D.A,"Jardim Stella":D.A,"Dolce Vita":D.A,"Loteamento Res. Fazenda Santa Rosa - Fase 1 (Portal San Giovani)":D.A,"Portal Giardino (Pateo do Colegio)":D.A,"Reserva Santa Rosa":D.A,"Loteamento Res. Terras da Fazenda":D.A,"Mall":D.A,"Mercadão":D.A,"Morada dos Pássaros":D.A,"Roberto Panzarin (Jatobá)":D.A,"Doutor Luiz De Mattos Pimenta (CECAP)":D.A,"Pedro Costa":D.A,"Porto Seguro":D.A,"Parque da Juventude":D.A,"Parque Linear":D.A,"Itatiba Park":D.A,"Rua Jundiaí":D.A,"Sesi":D.A,"Vila Cremonesi":D.A,"João Maggi":D.A,"Jardim Arizona":D.A,"Jardim das Nações":D.A,"Jardim de Lucca":D.A,"Jardim do Engenho":D.A,"Jardim Santa Filomena":D.A,"Jardim Santa Filomena II":D.A,"Jardim Santa Rosa":D.A,"Parque Industrial Itatiba":D.A,"Residencial Sitio do Engenho (Giardino D'Italia)":D.N,"Av. 29 de Abril":D.N,"Jardim Nova America I":D.N,"Jardim Nova America II":D.N,"Jardim Sao Luiz":D.N,"Feira Jardim México":D.N,"Vila Hércules":D.N,"Irmaos Mutton (Vila Mutton)":D.N,"Jardim Alice":D.N,"Jardim Aniele":D.N,"Jardim Delforno I":D.N,"Jardim Delforno II":D.N,"Jardim Galetto":D.N,"Jardim Lucia II":D.N,"Jardim Nossa Senhora das Gracas":D.N,"Jardim Nossa Senhora de Fatima":D.N,"Jardim Nova Itatiba":D.N,"Jardim Nova Itatiba II":D.N,"Jardim Sao Luiz II":D.N,"Jardim Sao Marcos":D.N,"Jardim Tereza":D.N,"Juliani":D.N,"Lanfranchi":D.N,"Loteamento Alpes do Cruzeiro":D.N,"Horizonte Azul":D.N,"Morrão da Força":D.N,"Quinta da Boa Vista":D.N,"Loteamento Res. Villa Ravenna":D.N,"Loteamento Res. Village de Piemonte (Pio Monte)":D.N,"Loteamento Villagio Fosuzzi":D.N,"Piu Verde":D.N,"Pedro Fumachi":D.N,"Jardim Carlos Borella":D.N,"Jardim Harmonia":D.N,"Vale Verde":D.N,"Novo Cruzeiro":D.N,"Parque Industrial San Francisco":D.N,"Parque São Vicente":D.N,"Recanto da Paz":D.N,"Loteamento Res. Parque Aracema":D.N,"Residencial Terras de Santa Cruz":D.N,"Rua Luiz Scavone":D.N,"Vila Tescarollo":D.N,"Vila Bela Vista":D.N,"Vila Belem":D.N,"Vila Brasileira":D.N,"Vila Capeletto":D.N,"Vila Carrara":D.N,"Vila Cassaro":D.N,"Vila Centenário":D.N,"Vila Cruzeiro":D.N,"Vila Fassina":D.N,"Vila Pabreu":D.N,"Vila Penteado":D.N,"Vila Prudente de Moraes":D.N,"Vila Rita":D.N,"Vila Santa Clara":D.N,"Vila Santa Terezinha":D.N,"Vila São Caetano":D.N,"Vila Trevisoni":D.N,"Village das Palmeiras":D.N,"Av. Pedro Mascagni":D.N,"Escola Literatus":D.N,"Centro":D.N,"Chacara Bredariol":D.N,"Chacara Piovesana":D.N,"Chapeu do Sol":D.N,"Cidade Jardim":D.N,"Condominio Residencial Fumachi":D.N,"Condominio Residencial Ouro":D.N,"Condominio Terras de Savion":D.N,"Chacara Boa Fe":D.N,"Fernando Momentel":D.N,"Jardim América":D.N,"Jardim Aurélia":D.N,"Jardim Coronel Peroba":D.N,"Jardim Ipe":D.N,"Jardim Lucia":D.N,"Jardim Maria":D.N,"Jardim Matheus":D.N,"Jardim México":D.N,"Jardim Morumbi":D.N,"Jardim Nice":D.N,"Jardim Paladino":D.N,"Jardim Salessi":D.N,"Jardim Sant Anna":D.N,"Jardim Santa Adelina":D.N,"Jardim Santa Luzia":D.N,"Jardim Santo Antonio":D.N,"Jardim São João":D.N,"Jardim São Jose":D.N,"Jardim Vitória":D.N,"Parque Residencial Elisa Tescarollo":D.N,"Parque San Francisco":D.N,"Recanto do Parque":D.N,"Vila Cristo Redentor":D.N,"Vila Petti":D.N,"Vila Santa Cruz":D.N,"Vila Segatto":D.N,"Citrus Pomar São Jorge":D.B,"Distrito Industrial Alfredo Rela":D.B,"Venda Nova":D.B,"Bairro dos Leite":D.B,"Encosta do Sol":D.B,"Estrada Mun. Leopoldino Bortolossi":D.B,"Estrada Mun. Sergio Luiz Canal":D.B,"Estrada Mun. Tereza Bernardes":D.B,"Fazenda Alagada":D.B,"Fazenda Girolanda":D.B,"Fazenda Malabar":D.B,"Loteamento Parque dos Canarios":D.B,"Loteamento Res. Rio das Flores (Condomínio Ecologie)":D.B,"Vale das Águas":D.B,"Parque da Fazenda":D.B,"Parque Nova Xampirra":D.B,"São Gabriel":D.B,"Rancho Paumar":D.B,"Recanto Princesa da Colina":D.B,"Residencial Paradiso":D.B,"Rodovia Itatiba – Jundiaí":D.B,"Rota das Bandeiras":D.B,"Rua Antonio Pedro Fagundes":D.B,"Tapera Grande":D.B,"Xampirra":D.B,"Bairro do Morro":D.B,"Palmeirinha":D.B,"Indústria Têxtil Belém":D.B,"Av. Eduardo Rodrigues Aniceto":D.B,"Aparecidinha":D.B,"Itapema":D.B,"Caminhos do Sol":D.B,"Cocais":D.B,"Morada das Fontes":D.B,"Jardim das Laranjeiras":D.B,"Condominio Ville de Chamonix":D.B,"Estrada Mun. Alcebíades Stefani (Condomínio Glebas de San Diego)":D.B,"Fazenda Atibainha":D.B,"Jardim do Leste":D.B,"Jardim dos Lagos":D.B,"Jardim Nova Esperança":D.B,"Recanto dos Pássaros":D.B,"Jardim Virgínia":D.B,"Loteamento Parque da Colina III":D.B,"Sete Lagos":D.B,"Loteamento Vila Real":D.B,"Mombuca":D.B,"Padovani":D.B,"Parque da Colina I":D.B,"Parque da Colina II":D.B,"Recanto do Atibaia":D.B,"Residencial Central Park I":D.B,"Residencial Central Park II":D.B,"Residencial Fazenda Serrinha (Itatiba Country Club)":D.B,"Ville de France":D.B,"Bairro do Porto":D.B,"Parque Empresarial Adelelmo Corradini":D.C,"Cemitério":D.C,"Jardim Verona":D.C,"Bairro Santo Antonio":D.C,"Jardim Esplanada":D.C,"Jardim Botânico":D.C,"Rei de Ouro":D.C,"Residencial Flamboyant":D.C,"Aida Haddad Jafet":D.E,"Artvinco":D.E,"Atrás do Posto Tres Irmaos":D.E,"Av. Jose Piovesan Netto":D.E,"Clube de Campo Fazenda":D.E,"Condominio Cachoeiras do Imarata":D.E,"Condominio Capela do Barreiro":D.E,"Condomínio Getúlio Luvison":D.E,"Condominio Sitio da Moenda":D.E,"Estrada do Pinheirinho":D.E,"Estrada Mun. Antonio Aquilis Rigolo Filho":D.E,"Estrada Mun. Irene Perobelli Fumachi":D.E,"Estrada Mun. João Bianco":D.E,"Estrada Mun. Joao Bulgarelli":D.E,"Estrada Mun. Jose de Camargo Filho":D.E,"Estrada Mun. Pedro Quaglia":D.E,"Fazenda Pereiras":D.E,"Hospital Itatiba":D.E,"Hotel Dona Carolina":D.E,"Jardim das Paineiras":D.E,"Jardim Dona Leonor":D.E,"Jardim Dona Leonor II":D.E,"Loteamento Fazenda Dona Carolina":D.E,"Loteamento Res. Bosque dos Pires":D.E,"Loteamento Res. Praca Ventura":D.E,"Terra Nova":D.E,"Loteamento Vivendas do Engenho D'Água I":D.E,"Loteamento Vivendas do Engenho D'Água II":D.E,"Loteamento Vivendas do Engenho D'Água III":D.E,"Morro Azul":D.E,"Prefeito Erasmo Chrispim":D.E,"Afonso Zupardo":D.E,"Nívea":D.E,"Pedreira":D.E,"Pico Alto":D.E,"Real Parque D Pedro I":D.E,"Residencial Moenda":D.E,"Summertime-B Barreiro":D.E,"Terras de San Marco":D.E,"Terras de Sao Sebastiao":D.E,"Valeo":D.E,"Zoológico":D.E,"Av. Valdir Nardin":D.E,"Av. Dante Cabrino":D.E,"Marginal D'Pedro I":D.E,"Salão de Assembleias das Testemunhas de Jeová":D.E,"Centro Empresarial Roque Faccina":D.E,"Chacara San Martin I":D.E,"Chacara San Martin II":D.E,"Santa Cruz dos Pires":D.E,"Condomínio Itaembu":D.E,"Estrada Mun. Antonio Paulo Francisco Lanfranchi":D.E,"Jardim Ana Maria":D.E,"Jardim Monte Verde":D.E,"Recanto Beira Rio":D.E,"Recanto das Estrelas":D.E,"Recreio Costa Verde":D.E,"Residencial Grêmio":D.E,"Sitio Santa Rita de Cassia":D.E,"Marginal Portico":D.E,"Bairro da Ponte":D.F,"Jardim Novo Horizonte":D.F,"Jardim Panorama":D.F,"Abramo Delforno":D.F,"Joao Corradini":D.F,"Joao Corradini-2 Etapa":D.F,"Quinta dos Bons Ventos":D.F,"Vila Jarussi I":D.F,"Escola Da Vince":D.F,"Condomínio Angelo Fattori":D.F,"Jardim Nardin":D.F,"Portal da Colina":D.F,"Rua Verginio Belgini":D.F,"Residencial Privilege":D.F,"Vila Jarussi II":D.F,"Jardim Alves da Silva":D.F};
+
+// ── ÓLEO DO BEM DATA ──────────────────────────────────────────────────────────
+const OLEO=[
+  {bairro:"Bairro da Ponte",local:"SABESP - Sede Unidade De Negócios",logradouro:"Estrada João Bernardo Filho",numero:"120",contato:""},
+  {bairro:"Jardim do Engenho",local:"Cemei Profa Sirliene Cristina Rodrigues De Souza Bredariol",logradouro:"Rua Sebastiana De Souza Bezana",numero:"375",contato:""},
+  {bairro:"Jardim Alto Da Santa Cruz",local:"Ecoponto Jd Novo Horizonte",logradouro:"Rua Luiz Jarussi",numero:"1000",contato:""},
+  {bairro:"Jardim Arizona",local:"Cemei Prof Maria Stella Longo Leme De Calaes",logradouro:"Travessa João Sebastião Bianco",numero:"225",contato:""},
+  {bairro:"Jardim Carlos Borella",local:"Cemei Andorinha",logradouro:"Rua Antônio Busca",numero:"199",contato:""},
+  {bairro:"Jardim Das Nações",local:"Cemei Juriti",logradouro:"Rua Bélgica",numero:"65",contato:"11 4524-4274"},
+  {bairro:"Jardim Das Nações",local:"Cemei Francisca De Castro Camargo",logradouro:"Av. Vicente Catalani",numero:"1555",contato:"11 4534-0444"},
+  {bairro:"Jardim Lucia",local:"Emeb Profa Sonia Rita Penteado Aguiar Santos",logradouro:"Rua Edson José Zamboni",numero:"80",contato:"11 4524-6018"},
+  {bairro:"Jardim México",local:"Ecoponto Jd Vitória",logradouro:"Av. Aurora Fernandes Zanutto",numero:"1",contato:""},
+  {bairro:"Jardim Nossa Senhora Das Graças",local:"Emeb Prof. Luiz Pântano",logradouro:"Av. Nossa Senhora Das Graças",numero:"1807",contato:"11 4524-0440"},
+  {bairro:"Jardim Nova Esperança",local:"Cemei Isabel Bizarro Tulon",logradouro:"Av. Alcides Baldi",numero:"S/N",contato:""},
+  {bairro:"Jardim Salessi",local:"Cemei Curió",logradouro:"Rua José Felizardo Rodrigues",numero:"S/N",contato:""},
+  {bairro:"Jardim Santo Antonio",local:"Cemei Beija-Flor",logradouro:"Rua Maria De Lourdes Pantano Scavone",numero:"550",contato:"11 4594-5982"},
+  {bairro:"Jardim São Jose",local:"SABESP - Agência Comercial Itatiba",logradouro:"Praça Sílvio Fasoli",numero:"S/N",contato:""},
+  {bairro:"Jardim Verona",local:"Cemei Teresa Maria Dos Santos Braida",logradouro:"Rua Regina Gasparini",numero:"250",contato:""},
+  {bairro:"Itatiba Park",local:"Emeb Profa Maria Teresa Degani De Souza",logradouro:"Av. Marcelo Gervásio Dian",numero:"495",contato:"11 4594-9259"},
+  {bairro:"Itatiba Park",local:"Cemei Pixarro",logradouro:"Av. Marcelo Gervásio Dian",numero:"495",contato:"11 4594-9255"},
+  {bairro:"Porto Seguro",local:"Cemei Profa Suzelei Marli Marques Matteuzzo",logradouro:"Av. Senador Paulo Abreu",numero:"737",contato:""},
+  {bairro:"Porto Seguro",local:"Cemei Rosa Masetti Paladino",logradouro:"Rua Miguel Francisco Rossi",numero:"147",contato:""},
+  {bairro:"Porto Seguro",local:"Emeb Profa Nazareth De Siqueira Rangel Barbosa",logradouro:"Av. Lucílio Tobias",numero:"S/N",contato:"11 4524-7212"},
+  {bairro:"Porto Seguro",local:"Emeb Profa Eliete Aparecida Sanfins Fusussi",logradouro:"Av. Urbano Bezana",numero:"S/N",contato:"11 4534-0670"},
+  {bairro:"Loteamento Vila Real",local:"Cemei Benedicto Delforno",logradouro:"Rua Antonio Lasaro Pupo",numero:"200",contato:""},
+  {bairro:"Terra Nova",local:"Cemei Profa Maria Helena Pensado Bianchi",logradouro:"Rua Rodrigo Rodrigues",numero:"45",contato:""},
+  {bairro:"Residencial Central Park I",local:"Cemei Profa Andrelina Andreatta",logradouro:"Rua Arlindo Fumache",numero:"205",contato:""},
+  {bairro:"Parque San Francisco",local:"Cemei Pintassilgo",logradouro:"Av. Antônio Nardi",numero:"320",contato:""},
+  {bairro:"Real Parque Dom Pedro I",local:"Cemei Sebastião Siqueira Da Cruz",logradouro:"Rua José Botelho Ferreira",numero:"63",contato:"11 4894-6002"},
+  {bairro:"Condominio Sitio Da Moenda",local:"Condomínio Sítio Da Moenda (Sede Administrativa)",logradouro:"Rua Mariano Cruz Munhoz",numero:"S/N",contato:""},
+  {bairro:"Condominio Sitio Da Moenda",local:"Cemei Joaquim Pires De Toledo",logradouro:"Rodovia Alkindar Monteiro Junqueira",numero:"S/N",contato:"11 4487-8614"},
+  {bairro:"Terras De São Sebastião",local:"Emeb Prof Maria Nair Silveira Franco",logradouro:"Rua Dos Hibiscos",numero:"S/N",contato:""},
+  {bairro:"Loteamento Vivendas do Engenho D'Água I",local:"Cemei Elizabeth Abrahão",logradouro:"Rua João Marella",numero:"260",contato:"11 4538-9305"},
+  {bairro:"Vila Brasileira",local:"Emeb Cel Manoel Joaquim De Araújo Campos",logradouro:"Rua São Paulo",numero:"71",contato:"11 4538-0055"},
+  {bairro:"Vila Brasileira",local:"Cemei Faisão",logradouro:"Rua Itália",numero:"S/N",contato:""},
+  {bairro:"Vila Cruzeiro",local:"Emeb Profa Maria Mercedes De Araújo",logradouro:"Rua Antônio Luiz Sanfins",numero:"285",contato:"11 4538-2184"},
+  {bairro:"Vila Cruzeiro",local:"Cemei Profa Lourdes Trindade Coelho",logradouro:"Rua Antônio Luiz Sanfins",numero:"275",contato:""}
+];
+
+// ── UTILITÁRIOS ───────────────────────────────────────────────────────────────
+//function norm(s){if(!s)return'';return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9 ]/g,' ').trim()}
+
+function norm(s){
+  return s
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-z0-9 ]/g,' ')
+    .replace(/\s+/g,' ') // 👈 resolve espaços duplicados
+    .trim();
+}
+
+function temEcoponto(nome){ return ECOPONTOS_BAIRROS.has(norm(nome)); }
+function getEcoponto(nome){ return ECOPONTOS_MAP[norm(nome)]||null; }
+
+function getOleo(nome){
+  const n=norm(nome);
+  const pontos=OLEO.filter(p=>norm(p.bairro).includes(n)||n.includes(norm(p.bairro)));
+  return pontos.length?pontos:null;
+}
+
+const DNAMES = [
+  'Domingo',
+  '2ª <span class="wk-feira">feira</span>',
+  '3ª <span class="wk-feira">feira</span>',
+  '4ª <span class="wk-feira">feira</span>',
+  '5ª <span class="wk-feira">feira</span>',
+  '6ª <span class="wk-feira">feira</span>',
+  'Sábado'
+];
+
+const DFULL = [
+  'Domingo',
+  '2ª <span class="wk-feira">feira</span>',
+  '3ª <span class="wk-feira">feira</span>',
+  '4ª <span class="wk-feira">feira</span>',
+  '5ª <span class="wk-feira">feira</span>',
+  '6ª <span class="wk-feira">feira</span>',
+  'Sábado'
+];
+const MONTHS=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+
+function nextWeekday(d){const t=new Date(),diff=d-t.getDay();return new Date(t.setDate(t.getDate()+(diff<=0?diff+7:diff)))}
+function fmtDate(d){return`${d.getDate()} de ${MONTHS[d.getMonth()]}`}
+function parseDate(s){const[dd,mm]=s.split('/').map(Number);return new Date(2026,mm-1,dd)}
+function getNextCata(dates){const today=new Date();today.setHours(0,0,0,0);for(const d of dates){const dt=parseDate(d);if(dt>=today)return{date:dt,str:d}}return null}
+
+function getRecicDia(nome){
+  const n=norm(nome);
+  for(let i=0;i<5;i++)for(let j=R_BREAKS[i];j<R_BREAKS[i+1];j++)
+    if(norm(RECICL[j]).includes(n)||n.includes(norm(RECICL[j])))return R_DAYS[i];
+  return null;
+}
+function getRota(nome){
+  const n=norm(nome);
+  for(const[r,obj]of Object.entries(ROTAS))for(const b of obj.b)
+    if(norm(b).includes(n)||n.includes(norm(b)))return parseInt(r);
+  return null;
+}
+function getDomiciliar(nome){
+  const n=norm(nome);
+  for(const[k,v]of Object.entries(DOMICILIAR))
+    if(norm(k)===n||norm(k).includes(n)||n.includes(norm(k)))return v;
+  return null;
+}
+function weekBar(dias){
+  return DNAMES.map((l,i)=>{
+    const on=dias.includes(i+1);
+    return`<div class="wk${on?' on':''}"><div class="wk-l">${l}</div><div class="wk-d"></div></div>`;
+  }).join('');
+}
+function diasLabel(dias){
+  if(dias.length>=6)return'Dias úteis + Sábado';
+  return dias.map(d=>DNAMES[d-1]).join(', ');
+}
+
+// ── RENDER CARDS ──────────────────────────────────────────────────────────────
+function renderCards(nome){
+  const recicDia=getRecicDia(nome),rotaN=getRota(nome),domicil=getDomiciliar(nome);
+  let html='';
+
+  if(domicil){
+    const hoje=domicil.dias.includes(new Date().getDay()+1)?` <span style="font-size:11px;color:var(--amber)"> — hoje!</span>`:'';
+    const notaHorario=domicil.h==='noturno'?'Período noturno · coloque o lixo após as 18:00':'Período diurno · coloque o lixo até as 07:00';
+    html+=`<div class="card comum"><div class="card-hdr"><div class="card-icon">🗑️</div><div><div class="card-label">Coleta domiciliar</div><div class="hdr-spacer"></div><div class="card-day">${diasLabel(domicil.dias)}${hoje}</div></div></div><div class="card-body"><div class="week-row">${weekBar(domicil.dias)}</div><div class="note">${notaHorario} · <a class="saiba cor-amber" onclick="showScreen('screen-domiciliar')">Saiba mais</a></div></div></div>`;
+  }
+
+  if(recicDia){
+    const next=nextWeekday(recicDia);
+    html+=`<div class="card recic"><div class="card-hdr"><div class="card-icon">♻️</div><div><div class="card-label">Coleta seletiva</div><div class="hdr-spacer"></div><div class="card-day">${DFULL[recicDia-1]}s</div></div></div><div class="card-body"><div class="week-row">${weekBar([recicDia])}</div><div class="note">Próxima: ${fmtDate(next)} · a partir das 07:00 · <a class="saiba cor-green" onclick="showScreen('screen-seletiva')">Saiba mais</a></div></div></div>`;
+  }
+
+  if(rotaN){
+    const rota=ROTAS[rotaN],nx=getNextCata(rota.d);
+    const remaining=rota.d.filter(d=>parseDate(d)>=new Date()).slice(0,6);
+    html+=`<div class="card inser"><div class="card-hdr"><div class="card-icon">🪑</div><div><div class="card-label">Catabugiganga</div><div class="hdr-spacer"></div><div class="card-day">${nx?fmtDate(nx.date):'—'}</div></div></div><div class="card-body"><div class="dates-grid">${remaining.map(d=>`<div class="date-chip${nx&&d===nx.str?' next':''}">${d}</div>`).join('')}</div><div class="note"><span class="rota-tag" style="display:inline;padding:2px 8px;margin-right:6px">Rota ${rotaN}</span>Até as 07:00 · <a class="saiba cor-blue" onclick="showScreen('screen-cata')">Saiba mais</a></div></div></div>`;
+  }
+
+  const eco=getEcoponto(nome);
+  if(eco){
+    html+=`<div class="card" style="border-color:var(--eco-soft)"><div class="card-hdr" style="background:#fff"><div class="card-icon" style="background:var(--eco-light)">🛢️</div><div><div class="card-label">Ecoponto no bairro</div><div class="hdr-spacer"></div><div class="card-day" style="font-size:16px">${eco.nome}</div></div></div><div class="card-body" style="background:var(--eco-light)"><div class="eco_addr">${eco.endereco}</div><div>2ª a 6ª · 08:00–11:30 e 13:00–17:30 · Sáb · 08:00–12:00</div><div><a class="link-eco" onclick="showScreen('screen-ecopontos')">Saiba mais</a></div></div></div>`;
+  }
+
+const oleoPoints=getOleo(nome);
+if(oleoPoints){
+  const itens=oleoPoints.map(p=>{
+    const tel=p.contato?` · <a href="tel:+55${p.contato.replace(/\s|-/g,'')}" style="color:var(--amber);text-decoration:none">${p.contato}</a>`:'';
+    return`<li style="padding:8px 0;border-bottom:1px solid rgba(0,0,0,0.06)"><h4 class="cor-amber">${p.local}</h4><div class="oleo_addr2">${p.logradouro}, ${p.numero}${tel}</div></li>`;
+  }).join('');
+  html+=`<div class="card" style="border-color:#F5D9A8"><div class="card-hdr" style="background:#fff"><div class="card-icon" style="background:var(--amber-light)">🤗</div><div><div class="card-label">Coleta de óleo</div><div class="hdr-spacer"></div><div class="card-day" style="font-size:16px">Óleo do Bem</div></div></div><div class="card-body" style="background:#FFFDF7"><ul style="list-style:none;padding:0;margin:0">${itens}</ul><div>Traga 1 litro de óleo e ganhe 1 barra de sabão · <a class="saiba cor-amber" onclick="showScreen('screen-oleo-do-bem')">Saiba mais</a></div></div></div>`;
+}
+
+  return html;
+}
+
+// ── RENDER ACCORDIONS ────────────────────────────────────────────────────────
+function renderOleoAccordion(){
+  const container=document.getElementById('oleo-accordion');
+  if(!container)return;
+  const grouped={},order=[];
+  for(const p of OLEO){
+    if(!grouped[p.bairro]){grouped[p.bairro]=[];order.push(p.bairro);}
+    grouped[p.bairro].push(p);
+  }
+  container.innerHTML=order.map(bairro=>{
+    const locais=grouped[bairro];
+    const label=locais.length===1?'1 local':locais.length+' locais';
+    const itens=locais.map(loc=>{
+      const tel=loc.contato?`<div><a href="tel:+55${loc.contato.replace(/\s|-/g,'')}" class="link-plain">${loc.contato}</a></div>`:'';
+      return`<div style="padding:10px 0;border-bottom:1px solid var(--gray-border)"><h3 class="font-14 cor-amber">${loc.local}</h3><div class="oleo_addr">${loc.logradouro}, ${loc.numero}</div>${tel}</div>`;
+    }).join('');
+    return`<div class="acc-item"><button class="acc-trigger" onclick="toggleAcc(this)">${bairro} <span style="font-size:11px;font-weight:400;color:var(--text-3);margin-left:4px">${label}</span> <div class="acc-chevron">▼</div></button><div class="acc-body" style="padding:0 16px 4px">${itens}</div></div>`;
+  }).join('');
+}
+
+function renderEcopontosAccordion(){
+  const container=document.getElementById('ecopontos-accordion');
+  if(!container)return;
+  container.innerHTML=Object.values(ECOPONTOS_MAP).map(eco=>`
+    <div class="acc-item"><button class="acc-trigger" onclick="toggleAcc(this)">${eco.nome} <div class="acc-chevron">▼</div></button><div class="acc-body"><h4 class="eco-addr cor-purple">${eco.endereco}</h4><div class="eco-addr2">${eco.ref}</div></div></div>`).join('');
+}
+
+// ── LISTA ─────────────────────────────────────────────────────────────────────
+function buildMasterList(){
+  const seen=new Set(),out=[];
+  const add=nome=>{const k=norm(nome);if(!seen.has(k)){seen.add(k);out.push(nome);}};
+  Object.keys(DOMICILIAR).forEach(add);
+  RECICL.forEach(add);
+  for(const obj of Object.values(ROTAS))obj.b.forEach(add);
+  return out.sort((a,b)=>a.localeCompare(b,'pt-BR'));
+}
+
+let selected=null;
+
+function select(nome){
+  if(!nome)return;
+  selected=nome;
+  document.querySelectorAll('.row').forEach(el=>el.classList.toggle('selected',el.dataset.nome===nome));
+
+  if(isDesktop()){
+    const panel = document.getElementById('desktop-info-panel');
+    const content = document.getElementById('desktop-info-content');
+    const welcome = document.getElementById('desktop-welcome');
+    content.innerHTML = `
+      <div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <h2 class="local_item_title" style="margin:0">${nome}</h2>
+          <button class="close-btn" onclick="closeDesktopPanel()">✕</button>
+        </div>
+        <div class="cards">${renderCards(nome)}</div>
+      </div>`;
+    panel.style.display='block';
+    welcome.style.display='none';
+    document.getElementById('home-right').scrollTop=0;
+    return;
+  }
+
+  document.getElementById('r-name').textContent=nome;
+  document.getElementById('cards').innerHTML=renderCards(nome);
+  const p=document.getElementById('panel');
+  p.classList.add('visible');
+  p.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function closeDesktopPanel(){
+  selected=null;
+  document.querySelectorAll('.row').forEach(el=>el.classList.remove('selected'));
+  document.getElementById('desktop-info-panel').style.display='none';
+  document.getElementById('desktop-welcome').style.display='block';
+  document.getElementById('search').value='';
+  document.getElementById('dropdown').classList.remove('open');
+}
+window.closeDesktopPanel=closeDesktopPanel;
+
+function closePanel(){
+  selected=null;
+  document.querySelectorAll('.row').forEach(el=>el.classList.remove('selected'));
+  document.getElementById('panel').classList.remove('visible');
+}
+window.closePanel=closePanel;
+
+function filterList(q){
+  const dd=document.getElementById('dropdown');
+  const t=norm(q);
+  if(!t){ dd.classList.remove('open'); return; }
+const termos = t.split(/\s+/);
+
+const matches = MASTER.filter(nome => {
+  const n = norm(nome);
+  return termos.every(term => n.includes(term));
+});
+  if(!matches.length){
+    dd.innerHTML='<div class="dropdown-empty">Nenhum bairro encontrado.</div>';
+  } else {
+    dd.innerHTML=matches.map(nome=>`
+      <div class="row" data-nome="${nome.replace(/"/g,'&quot;')}" onclick="selectFromDropdown(this.dataset.nome)">
+        <div class="local_item">
+          <h3>${nome}</h3>
+          ${temEcoponto(nome)?'<span title="Tem Ecoponto">🛢️</span>':''}
+          ${getOleo(nome)?'<span title="Tem Óleo do Bem">🤗</span>':''}
+        </div>
+        <div class="arrow"></div>
+      </div>`).join('');
+  }
+  dd.classList.add('open');
+}
+window.filterList=filterList;
+
+function selectFromDropdown(nome){
+  document.getElementById('dropdown').classList.remove('open');
+  document.getElementById('search').value=nome;
+  select(nome);
+}
+window.selectFromDropdown=selectFromDropdown;
+
+// Close dropdown on outside click
+document.addEventListener('click', e=>{
+  if(!e.target.closest('.search-wrap')){
+    document.getElementById('dropdown').classList.remove('open');
+  }
+});
+
+let MASTER=[];
+function buildList(){
+  renderOleoAccordion();
+  renderEcopontosAccordion();
+  MASTER=buildMasterList();
+  document.getElementById('list').innerHTML=MASTER.map(nome=>`
+    <div class="row" data-nome="${nome.replace(/"/g,'&quot;')}" onclick="select(this.dataset.nome)">
+      <div class="local_item">
+        <h3>${nome}</h3>
+        ${temEcoponto(nome)?'<span title="Tem Ecoponto">🛢️</span>':''}
+        ${getOleo(nome)?'<span title="Tem Óleo do Bem">🤗</span>':''}
+      </div>
+      <div class="arrow"></div>
+    </div>`).join('');
+}
+
+buildList();
+routeFromHash();
+
+function scScroll(dir){
+  const t=document.getElementById('sc-track');
+  t.scrollBy({left:dir*260,behavior:'smooth'});
+}
+
+function copiarPix() {
+  const chave = document.getElementById("pixKey").innerText;
+
+  navigator.clipboard.writeText(chave).then(() => {
+    const msg = document.getElementById("mensagem");
+    msg.style.display = "block";
+
+    setTimeout(() => {
+      msg.style.display = "none";
+    }, 2000);
+  });
+}
+</script>
+</body>
+</html>
