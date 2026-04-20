@@ -806,7 +806,7 @@ function clearSearch(){
 
   if(isDesktop()){
     document.getElementById('desktop-info-panel').style.display = 'none';
-    document.getElementById('desktop-welcome').style.display = 'block';
+    
   } else {
     document.getElementById('panel').classList.remove('visible');
   }
@@ -1248,7 +1248,7 @@ function closeDesktopPanel(){
   selected=null;
   document.querySelectorAll('.row').forEach(el=>el.classList.remove('selected'));
   document.getElementById('desktop-info-panel').style.display='none';
-  document.getElementById('desktop-welcome').style.display='block';
+  
   document.getElementById('search').value='';
   document.getElementById('dropdown').classList.remove('open');
 }
