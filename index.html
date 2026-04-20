@@ -1006,12 +1006,14 @@ const OLEO=[
 //function norm(s){if(!s)return'';return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9 ]/g,' ').trim()}
 
 function norm(s){
+  if (!s) return ''; //
+
   return s
     .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g,'')
     .replace(/[^a-z0-9 ]/g,' ')
-    .replace(/\s+/g,' ') // 👈 resolve espaços duplicados
+    .replace(/\s+/g,' ')
     .trim();
 }
 
@@ -1051,15 +1053,46 @@ function parseDate(s){const[dd,mm]=s.split('/').map(Number);return new Date(2026
 function getNextCata(dates){const today=new Date();today.setHours(0,0,0,0);for(const d of dates){const dt=parseDate(d);if(dt>=today)return{date:dt,str:d}}return null}
 
 function getRecicDia(nome){
-  const n=norm(nome);
-  for(let i=0;i<5;i++)for(let j=R_BREAKS[i];j<R_BREAKS[i+1];j++)
-    if(norm(RECICL[j]).includes(n)||n.includes(norm(RECICL[j])))return R_DAYS[i];
+  const n = norm(nome);
+
+  for(let i=0;i<5;i++){
+    for(let j=R_BREAKS[i];j<R_BREAKS[i+1];j++){
+      const r = norm(RECICL[j]);
+
+      // match EXATO apenas
+      if(r === n){
+        return R_DAYS[i];
+      }
+    }
+  }
+
   return null;
 }
 function getRota(nome){
-  const n=norm(nome);
-  for(const[r,obj]of Object.entries(ROTAS))for(const b of obj.b)
-    if(norm(b).includes(n)||n.includes(norm(b)))return parseInt(r);
+  const n = norm(nome);
+
+  for (const [r, obj] of Object.entries(ROTAS)) {
+    for (const b of obj.b) {
+      const nb = norm(b);
+
+      // match exato primeiro (mais confiável)
+      if (nb === n) {
+        return parseInt(r);
+      }
+    }
+  }
+
+  // fallback mais flexível
+  for (const [r, obj] of Object.entries(ROTAS)) {
+    for (const b of obj.b) {
+      const nb = norm(b);
+
+      if (nb.includes(n) || n.includes(nb)) {
+        return parseInt(r);
+      }
+    }
+  }
+
   return null;
 }
 function getDomiciliar(nome){
@@ -1095,7 +1128,8 @@ function renderCards(nome){
     html+=`<div class="card recic"><div class="card-hdr"><div class="card-icon">♻️</div><div><div class="card-label">Coleta seletiva</div><div class="hdr-spacer"></div><div class="card-day">${DFULL[recicDia-1]}s</div></div></div><div class="card-body"><div class="week-row">${weekBar([recicDia])}</div><div class="note">Próxima: ${fmtDate(next)} · a partir das 07:00 · <a class="saiba cor-green" onclick="showScreen('screen-seletiva')">Saiba mais</a></div></div></div>`;
   }
 
-  if(rotaN){
+//  if(rotaN){
+if(rotaN !== null){
     const rota=ROTAS[rotaN],nx=getNextCata(rota.d);
     const remaining=rota.d.filter(d=>parseDate(d)>=new Date()).slice(0,6);
     html+=`<div class="card inser"><div class="card-hdr"><div class="card-icon">🪑</div><div><div class="card-label">Catabugiganga</div><div class="hdr-spacer"></div><div class="card-day">${nx?fmtDate(nx.date):'—'}</div></div></div><div class="card-body"><div class="dates-grid">${remaining.map(d=>`<div class="date-chip${nx&&d===nx.str?' next':''}">${d}</div>`).join('')}</div><div class="note"><span class="rota-tag" style="display:inline;padding:2px 8px;margin-right:6px">Rota ${rotaN}</span>Até as 07:00 · <a class="saiba cor-blue" onclick="showScreen('screen-cata')">Saiba mais</a></div></div></div>`;
@@ -1165,7 +1199,7 @@ function select(nome){
   if(isDesktop()){
     const panel = document.getElementById('desktop-info-panel');
     const content = document.getElementById('desktop-info-content');
-  
+
     content.innerHTML = `
       <div>
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
@@ -1175,7 +1209,7 @@ function select(nome){
         <div class="cards">${renderCards(nome)}</div>
       </div>`;
     panel.style.display='block';
-   
+
     document.getElementById('home-right').scrollTop=0;
     return;
   }
