@@ -1165,7 +1165,7 @@ function select(nome){
   if(isDesktop()){
     const panel = document.getElementById('desktop-info-panel');
     const content = document.getElementById('desktop-info-content');
-    const welcome = document.getElementById('desktop-welcome');
+  
     content.innerHTML = `
       <div>
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
@@ -1175,7 +1175,7 @@ function select(nome){
         <div class="cards">${renderCards(nome)}</div>
       </div>`;
     panel.style.display='block';
-    welcome.style.display='none';
+   
     document.getElementById('home-right').scrollTop=0;
     return;
   }
