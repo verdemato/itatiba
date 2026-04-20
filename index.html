@@ -51,6 +51,7 @@
     <div class="search-inner">
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
       <input type="text" id="search" placeholder="Pesquise aqui um bairro, avenida…" oninput="filterList(this.value)" autocomplete="off"/>
+      <button id="clear-btn" onclick="clearSearch()">✕</button>
     </div>
   <div class="dropdown" id="dropdown"></div>
   </div>
@@ -790,6 +791,28 @@
 </article>
 
 <script>
+
+function clearSearch(){
+  const input = document.getElementById('search');
+  const dropdown = document.getElementById('dropdown');
+
+  input.value = '';
+  dropdown.classList.remove('open');
+
+  selected = null;
+
+  // remove seleção da lista
+  document.querySelectorAll('.row').forEach(el=>el.classList.remove('selected'));
+
+  if(isDesktop()){
+    document.getElementById('desktop-info-panel').style.display = 'none';
+    document.getElementById('desktop-welcome').style.display = 'block';
+  } else {
+    document.getElementById('panel').classList.remove('visible');
+  }
+}
+
+
 // ── NAVEGAÇÃO ─────────────────────────────────────────────────────────────────
 function isDesktop(){ return window.innerWidth >= 860; }
 
@@ -955,7 +978,7 @@ const ROTAS={
   16:{b:["Aparecidinha","Bairro dos Leite","Bairro Itapema","Chácara da Monica","Chavini e Castro","Citrus Pomar São Jorge","Distrito Industrial","Encosta do Sol","Estrada Leopoldino Bortolossi","Kromberg","Parque da Fazenda","Posto do Marinho Barsa","Princesa da Colina","Residencial Ecologie","São Gabriel","Tapera Grande","Vale das Águas","Venda Nova","Villagio Paradiso","Xampirra I","Xampirra II"],d:["16/01","13/02","16/03","14/04","14/05","12/06","13/07","10/08","09/09","07/10","06/11","07/12"]},
   17:{b:["Cocais","Jardim das Nações","Nova Esperança","Getúlio Luvison"],d:["19/01","16/02","17/03","15/04","15/05","15/06","14/07","11/08","10/09","08/10","09/11","08/12"]},
   18:{b:["Clube de Campo Fazenda","Condomínio Itaembu","Condomínio Moenda","Condomínio Residencial Ventura","Jardim Galetto","Moenda II","Monte Verde","Pico Alto","Posto Moenda","Recreio Costa Verde","Santa Cruz dos Pires","Terras de São Sebastião"],d:["20/01","18/02","18/03","16/04","18/05","16/06","15/07","12/08","11/09","09/10","10/11","09/12"]},
-  19:{b:["Artivinco","Baroneza Offices","Bobst","Bosque dos Pires","Capela do Barreiro","Condomínio Dona Carolina","Escola dos Pires","Estrada José de Camargo Filho (FAN)","Hotel Dona Carolina","Igreja Estr. da Baronesa (Testemunhas de Jeová)","Recanto Beira Rio","Residencial Grêmio","São Marcos","Sitio dos Baianos","Sitio dos Camargo","Summer Time"],d:["21/01","19/02","19/03","17/04","19/05","17/06","16/07","13/08","14/09","13/10","11/11","10/12"]},
+  19:{b:["Artvinco","Baroneza Offices","Bobst","Bosque dos Pires","Capela do Barreiro","Condomínio Dona Carolina","Escola dos Pires","Estrada José de Camargo Filho (FAN)","Hotel Dona Carolina","Igreja Estr. da Baronesa (Testemunhas de Jeová)","Recanto Beira Rio","Residencial Grêmio","São Marcos","Sitio dos Baianos","Sitio dos Camargo","Summer Time"],d:["21/01","19/02","19/03","17/04","19/05","17/06","16/07","13/08","14/09","13/10","11/11","10/12"]},
   20:{b:["Alambique do Franciscom","Cachoeira do Imarata","Chácara San Martin","Clinica Mandala","Condomínio Glebas de San Diego","Estrada Benedito Antonio Reganin (bairro dos Leite)","Estrada Municipal Brasílio Franciscon","Estrada Municipal João Bulgarelli","Haras Cristal","Jardim Ana Maria","Marginal da Portico","Morro Azul","Pedra de Ouro","Pinheirinho","Real Parque Dom Pedro I","Recanto das Estrelas","Sitio do Sorance","Zooparque"],d:["22/01","20/02","20/03","20/04","20/05","18/06","17/07","14/08","15/09","14/10","12/11","11/12"]}  
   
 };
